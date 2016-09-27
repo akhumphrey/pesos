@@ -1,9 +1,44 @@
 {% if all_envelopes %}
-    <ul>
-    {% for envelope in all_envelopes %}
-        <li><a href="{% url 'detail' envelope.id %}">{{ envelope.name }}</a></li>
-    {% endfor %}
-    </ul>
+  <table>
+    <thead>
+      <tr>
+        <th>name</th>
+        <th class="right">remaining</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for envelope in all_envelopes %}
+      <tr>
+        <td><a href="{% url 'envelopes:detail' envelope.id %}">{{ envelope.name }}</a></td>
+        <td class="right">&pound;{{ envelope.monthly_budget }}</td>
+      </tr>
+        {% if envelope.transactions %}
+      <tr>
+        <td colspan="2">
+          <table>
+            <thead>
+              <tr>
+                <th>date</th>
+                <th>account</th>
+                <th class="right">amount</th>
+              </tr>
+            </thead>
+            <tbody>
+          {% for transaction in envelope.transactions %}
+            <tr>
+              <td>{{ transation.date }}</td>
+              <td><a href="{% url 'transactions:detail' transation.id %}">{{ transation.account }}</a></td>
+              <td>{{ transation.amount }}</td>
+            </tr>
+          {% endfor %}
+            </tbody>
+          </table>
+        </td>
+      </tr>
+        {% endif %}
+      {% endfor %}
+    </tbody>
+  </table>
 {% else %}
     <p>No envelopes are available.</p>
 {% endif %}
