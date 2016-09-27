@@ -1,0 +1,9 @@
+{% if all_accounts %}
+    <ul>
+    {% for account in all_accounts %}
+        <li><a href="{% url 'detail' account.id %}">{{ account.name }}</a></li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>No accounts are available.</p>
+{% endif %}
