@@ -1,0 +1,9 @@
+{% if all_envelopes %}
+    <ul>
+    {% for envelope in all_envelopes %}
+        <li><a href="{% url 'detail' envelope.id %}">{{ envelope.name }}</a></li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>No envelopes are available.</p>
+{% endif %}
