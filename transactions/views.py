@@ -11,7 +11,3 @@ class IndexView(generic.ListView):
 
     def get_queryset(self):
         return Transaction.objects.order_by('-date')
-
-class DetailView(generic.DetailView):
-    model = Transaction
-    template_name = 'transactions/detail.html'

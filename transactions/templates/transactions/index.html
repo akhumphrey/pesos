@@ -1,9 +1,27 @@
+<h1><a href="/">home</a> &raquo; all transactions</h1>
 {% if all_transactions %}
-    <ul>
+  <table>
+    <thead>
+      <tr>
+        <th>Date</th>
+        <th>Account</th>
+        <th>Envelope</th>
+        <th class="right">Amount</th>
+      </tr>
+    </thead>
+    <tbody>
     {% for transaction in all_transactions %}
-        <li><a href="{% url 'transactions:detail' transaction.id %}">{{ transaction.date }}</a></li>
+      <tr>
+        <td>{{ transaction }}</td>
+        <td><a href="{% url 'accounts:detail' transaction.account_id %}">{{ transaction.account }}</a></td>
+        <td><a href="{% url 'envelopes:detail' transaction.envelope_id %}">{{ transaction.envelope }}</a></td>
+        {% if transaction.amount > 0 %}
+        <td class="right good">&pound;{{ transaction.amount }}</td>
+        {% else %}
+        <td class="right bad">&pound;{{ transaction.amount }}</td>
+        {% endif %}
+      </tr>
     {% endfor %}
-    </ul>
-{% else %}
-    <p>No transactions are available.</p>
+    </tbody>
+  </table>
 {% endif %}

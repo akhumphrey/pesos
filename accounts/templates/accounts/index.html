@@ -1,9 +1,19 @@
+<h1><a href="/">envelopes</a> | accounts</h1>
 {% if all_accounts %}
-    <ul>
-    {% for account in all_accounts %}
-        <li><a href="{% url 'accounts:detail' account.id %}">{{ account.name }}</a></li>
-    {% endfor %}
-    </ul>
-{% else %}
-    <p>No accounts are available.</p>
+  <table>
+    <thead>
+      <tr>
+        <th>name</th>
+        <th>balance</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for account in all_accounts %}
+      <tr>
+        <td><a href="{% url 'accounts:detail' account.id %}">{{ account }}</a></td>
+        <td>&pound;{{ account.balance }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
 {% endif %}

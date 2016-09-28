@@ -1,1 +1,24 @@
-<h1>{{ envelope.name }}</h1>
+<h1><a href="/">envelopes</a> &raquo; {{ envelope.name }} | <a href="{% url 'accounts:index' %}">accounts</a></h1>
+<h2>running total &pound;{{ envelope.running_total }}</h2>
+<table>
+  <thead>
+    <tr>
+      <th>date</th>
+      <th>account</th>
+      <th>amount</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for transaction in envelope.transaction_set.all %}
+    <tr>
+      <td>{{ transaction }}</td>
+      <td><a href="{% url 'accounts:detail' transaction.account_id %}">{{ transaction.account }}</a></td>
+      {% if transaction.amount > 0 %}
+      <td class="right good">&pound;{{ transaction.amount }}</td>
+      {% else %}
+      <td class="right bad">&pound;{{ transaction.amount }}</td>
+      {% endif %}
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
