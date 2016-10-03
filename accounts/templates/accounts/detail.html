@@ -1,24 +1,26 @@
-<h1><a href="/">envelopes</a> | <a href="{% url 'accounts:index' %}">accounts</a> &raquo; {{ account.name }}</h1>
-<h2>balance &pound;{{ account.balance }}</h2>
-<table>
-  <thead>
-    <tr>
-      <th>date</th>
-      <th>envelope</th>
-      <th>amount</th>
-    </tr>
-  </thead>
-  <tbody>
-    {% for transaction in account.transaction_set.all %}
-    <tr>
-      <td>{{ transaction }}</td>
-      <td><a href="{% url 'envelopes:detail' transaction.envelope_id %}">{{ transaction.envelope }}</a></td>
-      {% if transaction.amount > 0 %}
-      <td class="right good">&pound;{{ transaction.amount }}</td>
-      {% else %}
-      <td class="right bad">&pound;{{ transaction.amount }}</td>
-      {% endif %}
-    </tr>
-    {% endfor %}
-  </tbody>
-</table>
+{% include 'shared/partials/header.html' with title=account.name %}
+    <h1><a href="/">envelopes</a> | <a href="{% url 'accounts:index' %}">accounts</a> &raquo; {{ account.name }}</h1>
+    <h2>balance &pound;{{ account.balance }}</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>date</th>
+          <th>envelope</th>
+          <th>amount</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for transaction in account.transaction_set.all %}
+        <tr>
+          <td>{{ transaction }}</td>
+          <td><a href="{% url 'envelopes:detail' transaction.envelope_id %}">{{ transaction.envelope }}</a></td>
+          {% if transaction.amount > 0 %}
+          <td class="right good">&pound;{{ transaction.amount }}</td>
+          {% else %}
+          <td class="right bad">&pound;{{ transaction.amount }}</td>
+          {% endif %}
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+{% include 'shared/partials/footer.html' %}
