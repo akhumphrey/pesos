@@ -1,6 +1,7 @@
 {% include 'shared/partials/header.html' with title='transactions' %}
     <h1><a href="/">home</a> &raquo; all transactions</h1>
-    {% if all_transactions %}
+    <main>
+      {% if all_transactions %}
       <table>
         <thead>
           <tr>
@@ -11,7 +12,7 @@
           </tr>
         </thead>
         <tbody>
-        {% for transaction in all_transactions %}
+          {% for transaction in all_transactions %}
           <tr>
             <td>{{ transaction }}</td>
             <td><a href="{% url 'accounts:detail' transaction.account_id %}">{{ transaction.account }}</a></td>
@@ -22,8 +23,43 @@
             <td class="right bad">&pound;{{ transaction.amount }}</td>
             {% endif %}
           </tr>
-        {% endfor %}
+          {% endfor %}
         </tbody>
       </table>
-    {% endif %}
+      {% endif %}
+    </main>
+    <aside>
+      <form action="{% url 'transactions:create' %}" method="post">
+        {% csrf_token %}
+        <div>
+          <label for="account_id">account</label>
+          <select name="account_id" id="account_id">
+            {% for account in all_accounts %}
+            <option value="{{ account.id }}">{{ account.name }}</option>
+            {% endfor %}
+          </select>
+        </div>
+
+        <div>
+          <label for="envelope_id">envelope</label>
+          <select name="envelope_id" id="envelope_id">
+            {% for envelope in all_envelopes %}
+            <option value="{{ envelope.id }}">{{ envelope.name }}</option>
+            {% endfor %}
+          </select>
+        </div>
+
+        <div>
+          <label for="date">date</label>
+          <input type="text" name="date" id="date" />
+        </div>
+
+        <div>
+          <label for="amount">amount</label>
+          <input type="text" name="amount" id="amount" />
+        </div>
+
+        <p><input type="submit" value="save" /></p>
+      </form>
+    </aside>
 {% include 'shared/partials/footer.html' %}

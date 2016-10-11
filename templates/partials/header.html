@@ -5,3 +5,6 @@
     <!-- {% load static %}<link rel="stylesheet" type="text/css" href="{% static 'furtive.min.css' %}" /> -->
   </head>
   <body>
+    {% if message %}
+      <div class="message">{{ message }}</div>
+    {% endif %}
