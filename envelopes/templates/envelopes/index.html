@@ -1,6 +1,7 @@
 {% include 'shared/partials/header.html' with title='envelopes' %}
     <h1>envelopes | <a href="{% url 'accounts:index' %}">accounts</a></h1>
-    {% if all_envelopes %}
+    <main>
+      {% if all_envelopes %}
       <table>
         <thead>
           <tr>
@@ -23,7 +24,9 @@
           {% endfor %}
         </tbody>
       </table>
-    {% else %}
-        <p>No envelopes are available.</p>
-    {% endif %}
+      {% endif %}
+    </main>
+    <aside>
+      {% include 'partials/envelopes/transaction_form.html' with all_accounts=all_accounts all_envelopes=all_envelopes %}
+    </aside>
 {% include 'shared/partials/footer.html' %}

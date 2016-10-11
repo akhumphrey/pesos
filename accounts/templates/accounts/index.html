@@ -1,21 +1,30 @@
-{% include 'shared/partials/header.html' with title='envelopes' %}
+{% include 'shared/partials/header.html' with title='accounts' %}
     <h1><a href="/">envelopes</a> | accounts</h1>
-    {% if all_accounts %}
+    <main>
+      {% if all_accounts %}
       <table>
         <thead>
           <tr>
             <th>name</th>
-            <th>balance</th>
+            <th class="right">balance</th>
           </tr>
         </thead>
         <tbody>
           {% for account in all_accounts %}
           <tr>
             <td><a href="{% url 'accounts:detail' account.id %}">{{ account }}</a></td>
-            <td>&pound;{{ account.balance }}</td>
+            {% if account.balance > 0 %}
+            <td class="right good">&pound;{{ account.balance }}</td>
+            {% else %}
+            <td class="right bad">&pound;{{ account.balance }}</td>
+            {% endif %}
           </tr>
           {% endfor %}
         </tbody>
       </table>
-    {% endif %}
+      {% endif %}
+    </main>
+    <aside>
+      {% include 'partials/accounts/transaction_form.html' with all_accounts=all_accounts all_envelopes=all_envelopes %}
+    </aside>
 {% include 'shared/partials/footer.html' %}

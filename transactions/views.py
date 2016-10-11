@@ -30,4 +30,3 @@ def create(request):
     else:
         transaction.save()
         return HttpResponseRedirect(reverse('transactions:index'))
-    return True
