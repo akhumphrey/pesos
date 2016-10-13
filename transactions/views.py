@@ -23,8 +23,12 @@ class IndexView(generic.ListView):
 def create(request):
     account = get_object_or_404(Account, pk=request.POST['account_id'])
     envelope = get_object_or_404(Envelope, pk=request.POST['envelope_id'])
+    amount = request.POST['amount']
+    if 'subtract' in request.POST:
+      amount = float(amount) * -1.00
+
     try:
-        transaction = Transaction(account=account, envelope=envelope, date=request.POST['date'], amount=request.POST['amount'])
+        transaction = Transaction(account=account, envelope=envelope, date=request.POST['date'], amount=amount)
     except (KeyError):
         return render(request, 'transactions/index.html', {'message': 'Something squiffy happened.'})
     else:

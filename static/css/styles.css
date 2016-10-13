@@ -7,3 +7,6 @@ h1 {
 aside.brdr--light-gray {
   padding: 40px 40px 20px;
 }
+aside h3 {
+  margin-top: 0;
+}
