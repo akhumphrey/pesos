@@ -1,39 +1,39 @@
-      <form action="{% url 'envelopes:create_transaction' %}" method="post">
-        {% csrf_token %}
-        <div>
-          <label for="account_id">account</label>
-          <select name="account_id" id="account_id">
-            <option>&nbsp;</option>
-            {% for account in all_accounts %}
-            <option value="{{ account.id }}">{{ account.name }}</option>
-            {% endfor %}
-          </select>
-        </div>
+  <form action="{% url 'envelopes:create_transaction' %}" method="post">
+    {% csrf_token %}
+    <div>
+      <label for="account_id">account</label>
+      <select name="account_id" id="account_id">
+        <option>&nbsp;</option>
+        {% for account in all_accounts %}
+        <option value="{{ account.id }}">{{ account.name }}</option>
+        {% endfor %}
+      </select>
+    </div>
 
-        <div>
-          <label for="envelope_id">envelope</label>
-          <select name="envelope_id" id="envelope_id">
-            <option>&nbsp;</option>
-            {% for envelope in all_envelopes %}
-              {% if envelope_id and envelope_id == envelope.id %}
-            <option value="{{ envelope.id }}" selected="selected">{{ envelope.name }}</option>
-              {% else %}
-            <option value="{{ envelope.id }}">{{ envelope.name }}</option>
-              {% endif %}
-            {% endfor %}
-          </select>
-        </div>
+    <div>
+      <label for="envelope_id">envelope</label>
+      <select name="envelope_id" id="envelope_id">
+        <option>&nbsp;</option>
+        {% for envelope in all_envelopes %}
+          {% if envelope_id and envelope_id == envelope.id %}
+        <option value="{{ envelope.id }}" selected="selected">{{ envelope.name }}</option>
+          {% else %}
+        <option value="{{ envelope.id }}">{{ envelope.name }}</option>
+          {% endif %}
+        {% endfor %}
+      </select>
+    </div>
 
-        <div>
-          <label for="date">date</label>
-          <input type="text" name="date" id="date" />
-        </div>
+    <div>
+      <label for="date">date</label>
+      <input type="text" name="date" id="date" />
+    </div>
 
-        <div>
-          <label for="amount">amount</label>
-          <input type="text" name="amount" id="amount" />
-        </div>
+    <div>
+      <label for="amount">amount</label>
+      <input type="text" name="amount" id="amount" />
+    </div>
 
-        <p><input type="submit" value="save" /></p>
-      </form>
+    <p><input type="submit" value="save" class="btn--green" /></p>
+  </form>
 
