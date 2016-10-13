@@ -2,9 +2,13 @@
 <html>
   <head>
     <title>{{ title }}</title>
-    {% load static %}<link rel="stylesheet" type="text/css" href="{% static 'furtive.min.css' %}" />
+    {% load static %}<link rel="stylesheet" type="text/css" href="{% static 'css/furtive.css' %}" />
+    {% load static %}<link rel="stylesheet" type="text/css" href="{% static 'css/styles.css' %}" />
+    <link rel="icon" type="image/png" href="{% static 'images/favicon.png' %}" />
   </head>
   <body>
     {% if message %}
       <div class="message">{{ message }}</div>
     {% endif %}
+    <div class="grd">
+      <div class="grd-row">

@@ -1,32 +1,32 @@
 {% include 'shared/partials/header.html' with title='envelopes' %}
+  <main class="grd-row-col-4-6">
     <h1>envelopes | <a href="{% url 'accounts:index' %}">accounts</a></h1>
-    <main>
-      {% if all_envelopes %}
-      <table>
-        <thead>
-          <tr>
-            <th>name</th>
-            <th class="right">monthly budget</th>
-            <th class="right">remaining</th>
-          </tr>
-        </thead>
-        <tbody>
-          {% for envelope in all_envelopes %}
-          <tr>
-            <td><a href="{% url 'envelopes:detail' envelope.id %}">{{ envelope }}</a></td>
-            <td class="right">&pound;{{ envelope.monthly_budget }}</td>
-            {% if envelope.running_total > envelope.monthly_budget %}
-            <td class="right good">&pound;{{ envelope.running_total }}</td>
-            {% else %}
-            <td class="right bad">&pound;{{ envelope.running_total }}</td>
-            {% endif %}
-          </tr>
-          {% endfor %}
-        </tbody>
-      </table>
-      {% endif %}
-    </main>
-    <aside>
-      {% include 'partials/envelopes/transaction_form.html' with all_accounts=all_accounts all_envelopes=all_envelopes %}
-    </aside>
+    {% if all_envelopes %}
+    <table>
+      <thead>
+        <tr>
+          <th>name</th>
+          <th class="right">monthly budget</th>
+          <th class="right">remaining</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for envelope in all_envelopes %}
+        <tr>
+          <td><a href="{% url 'envelopes:detail' envelope.id %}">{{ envelope }}</a></td>
+          <td class="right">&pound;{{ envelope.monthly_budget }}</td>
+          {% if envelope.running_total > envelope.monthly_budget %}
+          <td class="right good">&pound;{{ envelope.running_total }}</td>
+          {% else %}
+          <td class="right bad">&pound;{{ envelope.running_total }}</td>
+          {% endif %}
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    {% endif %}
+  </main>
+  <aside class="grd-row-col-2-6 brdr--light-gray">
+    {% include 'partials/envelopes/transaction_form.html' with all_accounts=all_accounts all_envelopes=all_envelopes %}
+  </aside>
 {% include 'shared/partials/footer.html' %}
