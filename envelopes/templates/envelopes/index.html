@@ -6,19 +6,19 @@
       <thead>
         <tr>
           <th>name</th>
-          <th class="right">monthly budget</th>
-          <th class="right">remaining</th>
+          <th class="txt--right">monthly budget</th>
+          <th class="txt--right">remaining</th>
         </tr>
       </thead>
       <tbody>
         {% for envelope in all_envelopes %}
         <tr>
           <td><a href="{% url 'envelopes:detail' envelope.id %}">{{ envelope }}</a></td>
-          <td class="right">&pound;{{ envelope.monthly_budget }}</td>
-          {% if envelope.running_total > envelope.monthly_budget %}
-          <td class="right good">&pound;{{ envelope.running_total }}</td>
+          <td class="txt--right fnt--orange">&pound;{{ envelope.monthly_budget }}</td>
+          {% if envelope.running_total >= envelope.monthly_budget %}
+          <td class="txt--right fnt--green">&pound;{{ envelope.running_total }}</td>
           {% else %}
-          <td class="right bad">&pound;{{ envelope.running_total }}</td>
+          <td class="txt--right fnt--red">&pound;{{ envelope.running_total }}</td>
           {% endif %}
         </tr>
         {% endfor %}
@@ -27,6 +27,8 @@
     {% endif %}
   </main>
   <aside class="grd-row-col-2-6 brdr--light-gray">
-    {% include 'partials/envelopes/transaction_form.html' with all_accounts=all_accounts all_envelopes=all_envelopes %}
+    <form action="{% url 'envelopes:create_transaction' %}" method="post">
+      {% include 'shared/partials/transaction_form.html' with all_accounts=all_accounts all_envelopes=all_envelopes %}
+    </form>
   </aside>
 {% include 'shared/partials/footer.html' %}
