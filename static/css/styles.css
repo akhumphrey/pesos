@@ -4,7 +4,10 @@ body {
 h1 {
   font-size: 2.998rem;
 }
-aside.brdr--light-gray {
+h2 {
+  font-size: 2.2rem;
+}
+aside {
   padding: 40px 40px 20px;
 }
 aside h3 {
