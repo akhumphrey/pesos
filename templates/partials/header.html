@@ -3,8 +3,10 @@
   <head>
     <title>{{ title }}</title>
     {% load static %}<link rel="stylesheet" type="text/css" href="{% static 'css/furtive.css' %}" />
+    {% load static %}<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/flatpickr/2.0.5/flatpickr.min.css" />
     {% load static %}<link rel="stylesheet" type="text/css" href="{% static 'css/styles.css' %}" />
     <link rel="icon" type="image/png" href="{% static 'images/favicon.png' %}" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/flatpickr/2.0.5/flatpickr.min.js"></script>
   </head>
   <body class="py2 px1">
     {% if message %}
