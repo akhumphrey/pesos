@@ -1,6 +1,10 @@
+{% load static %}
 {% include 'shared/partials/header.html' with title='accounts' %}
   <main class="grd-row-col-4-6">
-    <h1><a href="/">envelopes</a> | accounts</h1>
+    <h1>
+      <small><img src="{% static 'images/mail.svg' %}" alt="envelopes" title="envelopes" height="24" /> <a href="/">envelopes</a></small> |
+      <img src="{% static 'images/notebook-3.svg' %}" alt="accounts" title="accounts" height="36" /> accounts
+    </h1>
     {% if all_accounts %}
     <table>
       <thead>

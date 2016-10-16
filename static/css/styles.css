@@ -16,3 +16,6 @@ tfoot {
 tfoot td {
   text-align: right;
 }
+aside .grd {
+  padding: 0;
+}
