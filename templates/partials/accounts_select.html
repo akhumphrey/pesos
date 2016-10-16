@@ -1,0 +1,12 @@
+<div>
+  <label for="account_id">account</label>
+  <select name="account_id" id="account_id">
+    {% for account in all_accounts %}
+      {% if account_id and account_id == account.id %}
+    <option value="{{ account.id }}" selected="selected">{{ account.name }}</option>
+      {% else %}
+    <option value="{{ account.id }}">{{ account.name }}</option>
+      {% endif %}
+    {% endfor %}
+  </select>
+</div>

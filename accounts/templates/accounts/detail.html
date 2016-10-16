@@ -1,7 +1,14 @@
 {% include 'shared/partials/header.html' with title=account.name %}
   <main class="grd-row-col-4-6">
     <h1><a href="/">envelopes</a> | <a href="{% url 'accounts:index' %}">accounts</a> &raquo; {{ account.name }}</h1>
-    <h2>balance &pound;{{ account.balance }}</h2>
+    <h2>
+      balance
+      {% if account.balance > 0 %}
+      <span class="fnt--green">&pound;{{ account.balance }}</span>
+      {% else %}
+      <span class="fnt--red">&pound;{{ account.balance }}</span>
+      {% endif %}
+    </h2>
     <table>
       <thead>
         <tr>
@@ -25,8 +32,8 @@
       </tbody>
     </table>
   </main>
-  <aside class="grd-row-col-2-6 brdr--light-gray">
-    <form action="{% url 'accounts:create_transaction' %}" method="post">
+  <aside class="grd-row-col-2-6">
+    <form action="{% url 'accounts:create_transaction' %}" method="post" class="brdr--light-gray">
       {% include 'shared/partials/transaction_form.html' with all_accounts=all_accounts all_envelopes=all_envelopes account_id=account.id %}
     </form>
   </aside>

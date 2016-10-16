@@ -1,18 +1,7 @@
     <h3>new transaction</h3>
     {% csrf_token %}
-    <div>
-      <label for="account_id">account</label>
-      <select name="account_id" id="account_id">
-        <option>&nbsp;</option>
-        {% for account in all_accounts %}
-          {% if account_id and account_id == account.id %}
-        <option value="{{ account.id }}" selected="selected">{{ account.name }}</option>
-          {% else %}
-        <option value="{{ account.id }}">{{ account.name }}</option>
-          {% endif %}
-        {% endfor %}
-      </select>
-    </div>
+
+    {% include 'shared/partials/accounts_select.html' with all_accounts=all_accounts account_id=account_id %}
 
     <div>
       <label for="envelope_id">envelope</label>
@@ -28,15 +17,9 @@
       </select>
     </div>
 
-    <div>
-      <label for="date">date</label>
-      <input type="text" name="date" id="date" />
-    </div>
+    {% include 'shared/partials/date_input.html' %}
 
-    <div>
-      <label for="amount">amount</label>
-      <input type="text" name="amount" id="amount" />
-    </div>
+    {% include 'shared/partials/amount_input.html' %}
 
     <div class="grd">
       <div class="grd-row">

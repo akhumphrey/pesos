@@ -17,6 +17,14 @@ class IndexView(generic.ListView):
   def get_context_data(self, **kwargs):
     context = super(IndexView, self).get_context_data(**kwargs)
     context['all_accounts'] = Account.objects.order_by('name')
+    context['envelope_budget_total'] = 0.0
+    context['remaining_total'] = 0.0
+
+    all_envelopes = self.get_queryset()
+    for envelope in all_envelopes:
+      context['envelope_budget_total'] = context['envelope_budget_total'] + float(envelope.monthly_budget)
+      context['remaining_total'] = context['remaining_total'] + float(envelope.running_total())
+
     return context
 
 class DetailView(generic.DetailView):
@@ -24,17 +32,17 @@ class DetailView(generic.DetailView):
   template_name = 'envelopes/detail.html'
 
   def get_context_data(self, **kwargs):
-    context = super(DetailView, self).get_context_data(**kwargs)
-    context['all_accounts'] = Account.objects.order_by('name')
+    context                  = super(DetailView, self).get_context_data(**kwargs)
+    context['all_accounts']  = Account.objects.order_by('name')
     context['all_envelopes'] = Envelope.objects.order_by('name')
     return context
 
 def create_transaction(request):
-  account = get_object_or_404(Account, pk=request.POST['account_id'])
+  account  = get_object_or_404(Account, pk=request.POST['account_id'])
   envelope = get_object_or_404(Envelope, pk=request.POST['envelope_id'])
-  amount = request.POST['amount']
+  amount   = float(request.POST['amount'])
   if 'subtract' in request.POST:
-    amount = float(amount) * -1.00
+    amount = amount * -1.00
 
   try:
     transaction = Transaction(account=account, envelope=envelope, date=request.POST['date'], amount=amount)
