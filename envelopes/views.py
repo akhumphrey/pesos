@@ -51,3 +51,29 @@ def create_transaction(request):
   else:
     transaction.save()
     return HttpResponseRedirect(reverse('envelopes:detail', args=(envelope.id,)))
+
+def refill(request):
+  account               = get_object_or_404(Account, pk=request.POST['account_id'])
+  amount                = float(request.POST['amount'])
+  envelope_budget_total = 0.0
+  all_envelopes         = Envelope.objects.all()
+
+  for envelope in all_envelopes:
+    envelope_budget_total = envelope_budget_total + float(envelope.monthly_budget)
+
+  ratio = 1.0
+  if amount < envelope_budget_total:
+    ratio = amount / envelope_budget_total
+
+  for envelope in all_envelopes:
+    transaction_amount = round(float(envelope.monthly_budget)*ratio, 2)
+    if transaction_amount > 0.0:
+      amount      = amount - transaction_amount
+      transaction = Transaction(account=account, envelope=envelope, date=request.POST['date'], amount=transaction_amount)
+      transaction.save()
+
+  if amount > 0.0:
+    transaction = Transaction(account=account, envelope=Envelope.objects.get(pk=21), date=request.POST['date'], amount=round(amount, 2))
+    transaction.save()
+
+  return HttpResponseRedirect(reverse('envelopes:index'))

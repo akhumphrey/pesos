@@ -41,5 +41,19 @@
     <form action="{% url 'envelopes:create_transaction' %}" method="post" class="brdr--light-gray">
       {% include 'shared/partials/transaction_form.html' with all_accounts=all_accounts all_envelopes=all_envelopes %}
     </form>
+    <br />
+    <form action="{% url 'envelopes:refill' %}" method="post" class="brdr--light-gray">
+      <h3>refill envelopes</h3>
+
+      {% csrf_token %}
+
+      {% include 'shared/partials/accounts_select.html' with all_accounts=all_accounts %}
+
+      {% include 'shared/partials/date_input.html' %}
+
+      {% include 'shared/partials/amount_input.html' %}
+
+      <p><input type="submit" value="payday!" class="btn btn--blue" /></p>
+    </form>
   </aside>
 {% include 'shared/partials/footer.html' %}
