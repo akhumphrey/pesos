@@ -1,9 +1,10 @@
 from django.shortcuts import get_object_or_404, render
-from django.http import HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect
 from django.urls import reverse
 from django.views import generic
 
 from .models import Envelope
+from .forms import EnvelopeForm
 from accounts.models import Account
 from transactions.models import Transaction
 
@@ -77,3 +78,37 @@ def refill(request):
     transaction.save()
 
   return HttpResponseRedirect(reverse('envelopes:index'))
+
+def edit(request, envelope_id):
+  envelope = get_object_or_404(Envelope, pk=envelope_id)
+  title    = ' '.join(['editing', envelope.name ])
+  form     = EnvelopeForm(instance=envelope)
+  context  = {
+    'title': title,
+    'envelope': envelope,
+    'form': form,
+  }
+  return render(request, 'envelopes/edit.html', context)
+
+def update(request, envelope_id):
+  envelope = get_object_or_404(Envelope, pk=envelope_id)
+  form     = EnvelopeForm(request.POST)
+
+  if form.is_valid():
+    envelope.name           = request.POST.get('name', envelope.name)
+    envelope.monthly_budget = request.POST.get('monthly_budget', envelope.monthly_budget)
+    if request.POST.get('immutable_budget', False):
+      envelope.immutable_budget = True
+    else:
+      envelope.immutable_budget = False
+    envelope.save()
+    return HttpResponseRedirect(reverse('envelopes:detail', args=(envelope.id,)))
+  else:
+    title = ' '.join(['editing', envelope.name ])
+    context = {
+      'title': title,
+      'envelope': envelope,
+      'form': form,
+      'message': 'Something squiffy happened.'
+    }
+    return render(request, 'envelopes/edit.html', context)

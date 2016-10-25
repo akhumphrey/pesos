@@ -8,11 +8,7 @@
       <select name="envelope_id" id="envelope_id">
         <option>&nbsp;</option>
         {% for envelope in all_envelopes %}
-          {% if envelope_id and envelope_id == envelope.id %}
-        <option value="{{ envelope.id }}" selected="selected">{{ envelope.name }}</option>
-          {% else %}
-        <option value="{{ envelope.id }}">{{ envelope.name }}</option>
-          {% endif %}
+        <option value="{{ envelope.id }}" {% if envelope_id and envelope_id == envelope.id %} selected="selected" {% endif %}>{{ envelope.name }}</option>
         {% endfor %}
       </select>
     </div>

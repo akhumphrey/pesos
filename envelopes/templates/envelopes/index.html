@@ -1,10 +1,15 @@
+{% load static %}
 {% include 'shared/partials/header.html' with title='envelopes' %}
   <main class="grd-row-col-4-6">
-    <h1>envelopes | <a href="{% url 'accounts:index' %}">accounts</a></h1>
+    <h1>
+      <img src="{% static 'images/mail.svg' %}" alt="envelopes" title="envelopes" height="36" /> envelopes |
+      <small><img src="{% static 'images/notebook-3.svg' %}" alt="accounts" title="accounts" height="24" /> <a href="{% url 'accounts:index' %}">accounts</a></small>
+    </h1>
     {% if all_envelopes %}
     <table>
       <thead>
         <tr>
+          <th></th>
           <th>name</th>
           <th class="txt--right">monthly budget</th>
           <th class="txt--right">remaining</th>
@@ -13,6 +18,7 @@
       <tbody>
         {% for envelope in all_envelopes %}
         <tr>
+          <td><a href="{% url 'envelopes:edit' envelope.id %}"><img src="{% static 'images/mail-9.svg' %}" alt="edit" title="edit" height="24" /></a></td>
           <td><a href="{% url 'envelopes:detail' envelope.id %}">{{ envelope }}</a></td>
           <td class="txt--right fnt--orange">&pound;{{ envelope.monthly_budget }}</td>
           {% if envelope.running_total >= envelope.monthly_budget %}
@@ -25,7 +31,7 @@
       </tbody>
       <tfoot>
         <tr>
-          <td></td>
+          <td colspan="2"></td>
           <td class="fnt--orange">&pound;{{ envelope_budget_total }}</td>
           {% if remaining_total > 0 %}
           <td class="fnt--green">&pound;{{ remaining_total|floatformat:2 }}</td>

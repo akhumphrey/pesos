@@ -19,3 +19,8 @@ tfoot td {
 aside .grd {
   padding: 0;
 }
+input[type="checkbox"] {
+  display: inline-block;
+  width: inherit;
+  margin: 5px;
+}

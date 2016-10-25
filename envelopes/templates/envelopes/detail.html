@@ -2,7 +2,8 @@
 {% include 'shared/partials/header.html' with title=envelope.name %}
   <main class="grd-row-col-4-6">
     <h1>
-      <img src="{% static 'images/mail.svg' %}" alt="envelopes" title="envelopes" height="36" /> <a href="/">envelopes</a> &raquo; {{ envelope.name }} |
+      <img src="{% static 'images/mail.svg' %}" alt="envelopes" title="envelopes" height="36" /> <a href="/">envelopes</a> &raquo; {{ envelope.name }}
+      <small><a href="{% url 'envelopes:edit' envelope.id %}">edit</a></small> |
       <small><img src="{% static 'images/notebook-3.svg' %}" alt="accounts" title="accounts" height="24" /> <a href="{% url 'accounts:index' %}">accounts</a></small>
     </h1>
     <h2>running total &pound;{{ envelope.running_total }}</h2>
