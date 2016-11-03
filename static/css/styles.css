@@ -24,3 +24,10 @@ input[type="checkbox"] {
   width: inherit;
   margin: 5px;
 }
+.messages {
+  padding: 0;
+  margin-top: 0;
+}
+.messages li {
+  list-style-type: none;
+}

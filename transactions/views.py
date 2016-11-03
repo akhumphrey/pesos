@@ -2,6 +2,7 @@ from django.shortcuts import get_object_or_404, render
 from django.http import HttpResponseRedirect
 from django.urls import reverse
 from django.views import generic
+from django.contrib import messages
 
 from .models import Transaction
 from accounts.models import Account
@@ -30,7 +31,9 @@ def create(request):
   try:
     transaction = Transaction(account=account, envelope=envelope, date=request.POST['date'], amount=amount)
   except (KeyError):
-    return render(request, 'transactions/index.html', {'message': 'Something squiffy happened.'})
+    messages.add_message(request, messages.ERROR, 'Something squiffy happened.')
+    return render(request, 'transactions/index.html')
   else:
     transaction.save()
+    messages.add_message(request, messages.SUCCESS, 'Transaction added.')
     return HttpResponseRedirect(reverse('transactions:index'))

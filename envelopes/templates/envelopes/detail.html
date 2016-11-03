@@ -6,6 +6,9 @@
       <small><a href="{% url 'envelopes:edit' envelope.id %}">edit</a></small> |
       <small><img src="{% static 'images/notebook-3.svg' %}" alt="accounts" title="accounts" height="24" /> <a href="{% url 'accounts:index' %}">accounts</a></small>
     </h1>
+    {% if envelope.immutable_budget %}
+    <p>budget cannot be scaled</p>
+    {% endif %}
     <h2>running total &pound;{{ envelope.running_total }}</h2>
     <table>
       <thead>

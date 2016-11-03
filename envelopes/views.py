@@ -2,6 +2,7 @@ from django.shortcuts import get_object_or_404, render
 from django.http import HttpResponse, HttpResponseRedirect
 from django.urls import reverse
 from django.views import generic
+from django.contrib import messages
 
 from .models import Envelope
 from .forms import EnvelopeForm
@@ -24,7 +25,7 @@ class IndexView(generic.ListView):
     all_envelopes = self.get_queryset()
     for envelope in all_envelopes:
       context['envelope_budget_total'] = context['envelope_budget_total'] + float(envelope.monthly_budget)
-      context['remaining_total'] = context['remaining_total'] + float(envelope.running_total())
+      context['remaining_total']       = context['remaining_total'] + float(envelope.running_total())
 
     return context
 
@@ -48,35 +49,49 @@ def create_transaction(request):
   try:
     transaction = Transaction(account=account, envelope=envelope, date=request.POST['date'], amount=amount)
   except (KeyError):
-    return render(request, 'envelopes/index.html', {'message': 'Something squiffy happened.'})
+    messages.add_message(request, messages.ERROR, 'Something squiffy happened.')
+    return render(request, 'envelopes/index.html')
   else:
     transaction.save()
+    messages.add_message(request, messages.SUCCESS, 'Transaction added.')
     return HttpResponseRedirect(reverse('envelopes:detail', args=(envelope.id,)))
 
 def refill(request):
-  account               = get_object_or_404(Account, pk=request.POST['account_id'])
-  amount                = float(request.POST['amount'])
+  account = get_object_or_404(Account, pk=request.POST['account_id'])
+  amount  = float(request.POST['amount'])
   envelope_budget_total = 0.0
-  all_envelopes         = Envelope.objects.all()
+  envelope_immutable_budget_total = 0.0
 
-  for envelope in all_envelopes:
-    envelope_budget_total = envelope_budget_total + float(envelope.monthly_budget)
+  immutable_budget_envelopes = Envelope.objects.filter(immutable_budget=True)
 
-  ratio = 1.0
-  if amount < envelope_budget_total:
-    ratio = amount / envelope_budget_total
+  if len(immutable_budget_envelopes):
+    for envelope in immutable_budget_envelopes:
+      envelope_immutable_budget_total += float(envelope.monthly_budget)
 
-  for envelope in all_envelopes:
-    transaction_amount = round(float(envelope.monthly_budget)*ratio, 2)
-    if transaction_amount > 0.0:
-      amount      = amount - transaction_amount
-      transaction = Transaction(account=account, envelope=envelope, date=request.POST['date'], amount=transaction_amount)
-      transaction.save()
+    remaining_envelopes = Envelope.objects.filter(immutable_budget=False)
+    amount -= envelope_immutable_budget_total
 
-  if amount > 0.0:
-    transaction = Transaction(account=account, envelope=Envelope.objects.get(pk=21), date=request.POST['date'], amount=round(amount, 2))
-    transaction.save()
+    try:
+      count = Envelope.refill(request.POST['date'], account, immutable_budget_envelopes, envelope_immutable_budget_total, True)
+      count += Envelope.refill(request.POST['date'], account, remaining_envelopes, amount, False)
+    except ValueError as e:
+      messages.add_message(request, messages.ERROR, str(e))
+      return HttpResponseRedirect(reverse('envelopes:index'))
 
+  else:
+    all_envelopes = Envelope.objects.all()
+    try:
+      count = Envelope.refill(request.POST['date'], account, all_envelopes, amount, False)
+    except ValueError as e:
+      messages.add_message(request, messages.ERROR, str(e))
+      return HttpResponseRedirect(reverse('envelopes:index'))
+
+  if count == 1:
+    plural = 'transaction'
+  else:
+    plural = 'transactions'
+
+  messages.add_message(request, messages.SUCCESS, 'Refill successful - ' + str(count) + ' ' + plural + ' added.')
   return HttpResponseRedirect(reverse('envelopes:index'))
 
 def edit(request, envelope_id):
@@ -102,6 +117,7 @@ def update(request, envelope_id):
     else:
       envelope.immutable_budget = False
     envelope.save()
+    messages.add_message(request, messages.SUCCESS, envelope.name + ' updated.')
     return HttpResponseRedirect(reverse('envelopes:detail', args=(envelope.id,)))
   else:
     title = ' '.join(['editing', envelope.name ])
@@ -109,6 +125,6 @@ def update(request, envelope_id):
       'title': title,
       'envelope': envelope,
       'form': form,
-      'message': 'Something squiffy happened.'
     }
+    messages.add_message(request, messages.ERROR, 'Something squiffy happened.')
     return render(request, 'envelopes/edit.html', context)

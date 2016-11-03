@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/1.9/ref/settings/
 """
 
 import os
+from django.contrib.messages import constants as message_constants
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -73,6 +74,12 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'money.wsgi.application'
 
+MESSAGE_TAGS = {
+  message_constants.INFO: 'bg--blue fnt--off-white p1',
+  message_constants.SUCCESS: 'bg--green fnt--off-white p1',
+  message_constants.WARNING: 'bg--orange p1',
+  message_constants.ERROR: 'bg--red fnt--off-white p1',
+}
 
 # Database
 # https://docs.djangoproject.com/en/1.9/ref/settings/#databases
