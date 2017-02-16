@@ -1,0 +1,38 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>{% block title %}{% endblock %}</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/furtive.css' %}" />
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/flatpickr/2.0.5/flatpickr.min.css" />
+    <link rel="stylesheet" type="text/css" href="{% static 'css/styles.css' %}" />
+    <link rel="icon" type="image/png" href="{% static 'images/favicon.png' %}" />
+  </head>
+  <body class="py2 px1">
+    {% if user.is_authenticated %}
+      <p class="logout">logout</p>
+    {% endif %}
+    {% if messages %}
+      <ul class="messages">
+        {% for message in messages %}
+        <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+        {% endfor %}
+      </ul>
+    {% endif %}
+    <div class="grd">
+      <div class="grd-row">
+        {% block content %}
+        {% endblock %}
+      </div>
+    </div>
+    {% if user.is_authenticated %}
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/flatpickr/2.0.5/flatpickr.min.js"></script>
+      <script>
+        flatpickr('.date', {
+          'dateFormat': 'Y-m-d',
+          'allowInput': true,
+        });
+      </script>
+    {% endif %}
+  </body>
+</html>

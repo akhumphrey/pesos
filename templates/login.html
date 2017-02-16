@@ -1,0 +1,16 @@
+{% extends 'shared/base.html' %}
+{% block title %} login {% endblock %}
+{% load static %}
+
+{% block content %}
+<main class="grd-row-col-4-6">
+  <h1>login</h1>
+  <form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <p>
+      <input type="submit" value="login" class="btn btn--gray" />
+    </p>
+  </form>
+</main>
+{% endblock %}

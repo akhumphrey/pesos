@@ -1,4 +1,8 @@
-{% include 'shared/partials/header.html' with title='transactions' %}
+{% extends 'shared/base.html' %}
+{% block title %} transactions {% endblock %}
+{% load static %}
+
+{% block content %}
   <main class="grd-row-col-4-6">
     <h1><a href="/">home</a> &raquo; all transactions</h1>
     {% if all_transactions %}
@@ -33,4 +37,4 @@
       {% include 'shared/partials/transaction_form.html' with all_accounts=all_accounts all_envelopes=all_envelopes %}
     </form>
   </aside>
-{% include 'shared/partials/footer.html' %}
+{% endblock %}

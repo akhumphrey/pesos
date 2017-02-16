@@ -1,5 +1,8 @@
+{% extends 'shared/base.html' %}
+{% block title %} envelopes {% endblock %}
 {% load static %}
-{% include 'shared/partials/header.html' with title='envelopes' %}
+
+{% block content %}
   <main class="grd-row-col-4-6">
     <h1>
       <img src="{% static 'images/mail.svg' %}" alt="envelopes" title="envelopes" height="36" /> envelopes |
@@ -61,4 +64,4 @@
       <p><input type="submit" value="payday!" class="btn btn--blue" /></p>
     </form>
   </aside>
-{% include 'shared/partials/footer.html' %}
+{% endblock %}

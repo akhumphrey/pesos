@@ -3,12 +3,15 @@ from django.http import HttpResponseRedirect
 from django.urls import reverse
 from django.views import generic
 from django.contrib import messages
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.decorators import login_required
 
 from .models import Transaction
 from accounts.models import Account
 from envelopes.models import Envelope
 
-class IndexView(generic.ListView):
+class IndexView(LoginRequiredMixin, generic.ListView):
+  login_url = '/login/'
   template_name = 'transactions/index.html'
   context_object_name = 'all_transactions'
 
@@ -21,6 +24,7 @@ class IndexView(generic.ListView):
     context['all_envelopes'] = Envelope.objects.order_by('name')
     return context
 
+@login_required
 def create(request):
   account = get_object_or_404(Account, pk=request.POST['account_id'])
   envelope = get_object_or_404(Envelope, pk=request.POST['envelope_id'])

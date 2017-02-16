@@ -1,8 +1,11 @@
+{% extends 'shared/base.html' %}
+{% block title %} {{ envelope.name }} {% endblock %}
 {% load static %}
-{% include 'shared/partials/header.html' with title=envelope.name %}
+
+{% block content %}
   <main class="grd-row-col-4-6">
     <h1>
-      <img src="{% static 'images/mail.svg' %}" alt="envelopes" title="envelopes" height="36" /> <a href="/">envelopes</a> &raquo; {{ envelope.name }}
+      <img src="{% static 'images/mail.svg' %}" alt="envelopes" title="envelopes" height="36" /> <a href="{% url 'envelopes:index' %}">envelopes</a> &raquo; {{ envelope.name }}
       <small><a href="{% url 'envelopes:edit' envelope.id %}">edit</a></small> |
       <small><img src="{% static 'images/notebook-3.svg' %}" alt="accounts" title="accounts" height="24" /> <a href="{% url 'accounts:index' %}">accounts</a></small>
     </h1>
@@ -38,4 +41,4 @@
       {% include 'shared/partials/transaction_form.html' with all_accounts=all_accounts all_envelopes=all_envelopes envelope_id=envelope.id %}
     </form>
   </aside>
-{% include 'shared/partials/footer.html' %}
+{% endblock %}

@@ -32,6 +32,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+  'home.apps.HomeConfig',
   'accounts.apps.AccountsConfig',
   'envelopes.apps.EnvelopesConfig',
   'transactions.apps.TransactionsConfig',
@@ -86,6 +87,15 @@ MESSAGE_TAGS = {
 
 DATABASES = {
   'default': {
+    'ENGINE': 'django.db.backends.mysql',
+    'NAME': 'money',
+    'USER': 'money',
+    'OPTIONS': {
+      'autocommit': True,
+      'sql_mode': 'STRICT_ALL_TABLES',
+    }
+  },
+  'sqlite': {
     'ENGINE': 'django.db.backends.sqlite3',
     'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
   }
@@ -110,6 +120,8 @@ AUTH_PASSWORD_VALIDATORS = [
   },
 ]
 
+LOGIN_URL = '/login/'
+LOGIN_REDIRECT_URL = '/home'
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.9/topics/i18n/

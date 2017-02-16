@@ -3,13 +3,16 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.urls import reverse
 from django.views import generic
 from django.contrib import messages
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.decorators import login_required
 
 from .models import Envelope
 from .forms import EnvelopeForm
 from accounts.models import Account
 from transactions.models import Transaction
 
-class IndexView(generic.ListView):
+class IndexView(LoginRequiredMixin, generic.ListView):
+  login_url = '/login/'
   template_name = 'envelopes/index.html'
   context_object_name = 'all_envelopes'
 
@@ -29,7 +32,8 @@ class IndexView(generic.ListView):
 
     return context
 
-class DetailView(generic.DetailView):
+class DetailView(LoginRequiredMixin, generic.DetailView):
+  login_url = '/login/'
   model = Envelope
   template_name = 'envelopes/detail.html'
 
@@ -39,6 +43,7 @@ class DetailView(generic.DetailView):
     context['all_envelopes'] = Envelope.objects.order_by('name')
     return context
 
+@login_required
 def create_transaction(request):
   account  = get_object_or_404(Account, pk=request.POST['account_id'])
   envelope = get_object_or_404(Envelope, pk=request.POST['envelope_id'])
@@ -56,6 +61,7 @@ def create_transaction(request):
     messages.add_message(request, messages.SUCCESS, 'Transaction added.')
     return HttpResponseRedirect(reverse('envelopes:detail', args=(envelope.id,)))
 
+@login_required
 def refill(request):
   account = get_object_or_404(Account, pk=request.POST['account_id'])
   amount  = float(request.POST['amount'])
@@ -94,6 +100,7 @@ def refill(request):
   messages.add_message(request, messages.SUCCESS, 'Refill successful - ' + str(count) + ' ' + plural + ' added.')
   return HttpResponseRedirect(reverse('envelopes:index'))
 
+@login_required
 def edit(request, envelope_id):
   envelope = get_object_or_404(Envelope, pk=envelope_id)
   title    = ' '.join(['editing', envelope.name ])
@@ -105,6 +112,7 @@ def edit(request, envelope_id):
   }
   return render(request, 'envelopes/edit.html', context)
 
+@login_required
 def update(request, envelope_id):
   envelope = get_object_or_404(Envelope, pk=envelope_id)
   form     = EnvelopeForm(request.POST)
