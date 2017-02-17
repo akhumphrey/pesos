@@ -16,7 +16,7 @@ class IndexView(LoginRequiredMixin, generic.ListView):
   context_object_name = 'all_accounts'
 
   def get_queryset(self):
-    return Account.objects.order_by('name')
+    return Account.objects.filter(user_id=self.request.user.id).order_by('name')
 
   def get_context_data(self, **kwargs):
     context = super(IndexView, self).get_context_data(**kwargs)
@@ -29,8 +29,9 @@ class DetailView(LoginRequiredMixin, generic.DetailView):
   template_name = 'accounts/detail.html'
 
   def get_context_data(self, **kwargs):
+    user_id = self.request.user.id
     context = super(DetailView, self).get_context_data(**kwargs)
-    context['all_accounts'] = Account.objects.order_by('name')
+    context['all_accounts'] = Account.objects.filter(user_id=user_id).order_by('name')
     context['all_envelopes'] = Envelope.objects.order_by('name')
     return context
 
