@@ -2,35 +2,32 @@
 {% block title %} accounts {% endblock %}
 {% load static %}
 
-{% block content %}
-  <main class="grd-row-col-4-6">
-    <h1>
-      <small><img src="{% static 'images/mail.svg' %}" alt="envelopes" title="envelopes" height="24" /> <a href="{% url 'envelopes:index' %}">envelopes</a></small> |
-      <img src="{% static 'images/notebook-3.svg' %}" alt="accounts" title="accounts" height="36" /> accounts
-    </h1>
-    {% if all_accounts %}
-    <table>
-      <thead>
-        <tr>
-          <th>name</th>
-          <th class="txt--right">balance</th>
-        </tr>
-      </thead>
-      <tbody>
-        {% for account in all_accounts %}
-        <tr>
-          <td><a href="{% url 'accounts:detail' account.id %}">{{ account }}</a></td>
-          {% if account.balance > 0 %}
-          <td class="txt--right fnt--green">&pound;{{ account.balance }}</td>
-          {% else %}
-          <td class="txt--right fnt--red">&pound;{{ account.balance }}</td>
-          {% endif %}
-        </tr>
-        {% endfor %}
-      </tbody>
-    </table>
-    {% endif %}
-  </main>
+{% block main %}
+  {% if all_accounts %}
+  <table>
+    <thead>
+      <tr>
+        <th>name</th>
+        <th class="txt--right">balance</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for account in all_accounts %}
+      <tr>
+        <td><a href="{% url 'accounts:detail' account.id %}">{{ account }}</a></td>
+        {% if account.balance > 0 %}
+        <td class="txt--right fnt--green">&pound;{{ account.balance }}</td>
+        {% else %}
+        <td class="txt--right fnt--red">&pound;{{ account.balance }}</td>
+        {% endif %}
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% endif %}
+{% endblock %}
+
+{% block aside %}
   <aside class="grd-row-col-2-6">
     <form action="{% url 'accounts:create_transaction' %}" method="post" class="brdr--light-gray">
       {% include 'shared/partials/transaction_form.html' with all_accounts=all_accounts all_envelopes=all_envelopes %}

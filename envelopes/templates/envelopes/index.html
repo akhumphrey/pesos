@@ -2,49 +2,46 @@
 {% block title %} envelopes {% endblock %}
 {% load static %}
 
-{% block content %}
-  <main class="grd-row-col-4-6">
-    <h1>
-      <img src="{% static 'images/mail.svg' %}" alt="envelopes" title="envelopes" height="36" /> envelopes |
-      <small><img src="{% static 'images/notebook-3.svg' %}" alt="accounts" title="accounts" height="24" /> <a href="{% url 'accounts:index' %}">accounts</a></small>
-    </h1>
-    {% if all_envelopes %}
-    <table>
-      <thead>
-        <tr>
-          <th></th>
-          <th>name</th>
-          <th class="txt--right">monthly budget</th>
-          <th class="txt--right">immutable budget?</th>
-          <th class="txt--right">remaining</th>
-        </tr>
-      </thead>
-      <tbody>
-        {% for envelope in all_envelopes %}
-        <tr>
-          <td><a href="{% url 'envelopes:edit' envelope.id %}"><img src="{% static 'images/mail-9.svg' %}" alt="edit" title="edit" height="24" /></a></td>
-          <td><a href="{% url 'envelopes:detail' envelope.id %}">{{ envelope }}</a></td>
-          <td class="txt--right fnt--orange">&pound;{{ envelope.monthly_budget }}</td>
-          {% if envelope.immutable_budget %}
-          <td class="txt--right fnt--green">&#10004;</td>
-          {% else %}
-          <td class="txt--right fnt--red">&#10008;</td>
-          {% endif %}
-          <td class="txt--right {% if envelope.running_total >= envelope.monthly_budget %} fnt--green {% else %} fnt--red {% endif %}">&pound;{{ envelope.running_total }}</td>
-        </tr>
-        {% endfor %}
-      </tbody>
-      <tfoot>
-        <tr>
-          <td colspan="2"></td>
-          <td class="fnt--orange">&pound;{{ envelope_budget_total }}</td>
-          <td>&nbsp;</td>
-          <td class="{% if remaining_total > 0 %} fnt--green {% else %} fnt--red {% endif %}">&pound;{{ remaining_total|floatformat:2 }}</td>
-        </tr>
-      </tfoot>
-    </table>
-    {% endif %}
-  </main>
+{% block main %}
+  {% if all_envelopes %}
+  <table>
+    <thead>
+      <tr>
+        <th></th>
+        <th>name</th>
+        <th class="txt--right">monthly budget</th>
+        <th class="txt--right">immutable budget?</th>
+        <th class="txt--right">remaining</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for envelope in all_envelopes %}
+      <tr>
+        <td><a href="{% url 'envelopes:edit' envelope.id %}"><img src="{% static 'images/mail-9.svg' %}" alt="edit" title="edit" height="24" /></a></td>
+        <td><a href="{% url 'envelopes:detail' envelope.id %}">{{ envelope }}</a></td>
+        <td class="txt--right fnt--orange">&pound;{{ envelope.monthly_budget }}</td>
+        {% if envelope.immutable_budget %}
+        <td class="txt--right fnt--green">&#10004;</td>
+        {% else %}
+        <td class="txt--right fnt--red">&#10008;</td>
+        {% endif %}
+        <td class="txt--right {% if envelope.running_total >= envelope.monthly_budget %} fnt--green {% else %} fnt--red {% endif %}">&pound;{{ envelope.running_total }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+    <tfoot>
+      <tr>
+        <td colspan="2"></td>
+        <td class="fnt--orange">&pound;{{ envelope_budget_total }}</td>
+        <td>&nbsp;</td>
+        <td class="{% if remaining_total > 0 %} fnt--green {% else %} fnt--red {% endif %}">&pound;{{ remaining_total|floatformat:2 }}</td>
+      </tr>
+    </tfoot>
+  </table>
+  {% endif %}
+{% endblock %}
+
+{% block aside %}
   <aside class="grd-row-col-2-6">
     <form action="{% url 'envelopes:create_transaction' %}" method="post" class="brdr--light-gray">
       {% include 'shared/partials/transaction_form.html' with all_accounts=all_accounts all_envelopes=all_envelopes %}

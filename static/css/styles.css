@@ -1,6 +1,12 @@
 h1 {
   font-size: 2.998rem;
 }
+h1 small {
+  font-size: 1.5rem;
+}
+h1 small img {
+  height: 16px;
+}
 h2 {
   font-size: 2.2rem;
 }
@@ -30,4 +36,21 @@ input[type="checkbox"] {
 }
 .messages li {
   list-style-type: none;
+}
+a.home,
+a.logout {
+  display: block;
+  position: absolute;
+  top: 0.5rem;
+  width: 24px;
+  height: 24px;
+  overflow: hidden;
+}
+a.home {
+  left: 0.5rem;
+  background: url(/static/images/browser-5.svg) no-repeat center;
+}
+a.logout {
+  right: 0.5rem;
+  background: url(/static/images/user-16.svg) no-repeat center;
 }

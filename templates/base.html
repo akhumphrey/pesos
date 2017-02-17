@@ -10,7 +10,8 @@
   </head>
   <body class="py2 px1">
     {% if user.is_authenticated %}
-      <p class="logout">logout</p>
+      <a href="/" class="home" title="home"></a>
+      <a href="{% url 'logout' %}" class="logout" title="logout"></a>
     {% endif %}
     {% if messages %}
       <ul class="messages">
@@ -21,7 +22,20 @@
     {% endif %}
     <div class="grd">
       <div class="grd-row">
-        {% block content %}
+        <main class="grd-row-col-4-6">
+          <h1>
+            <small>
+              <img src="{% static 'images/mail.svg' %}" alt="envelopes" title="envelopes" height="16" /> <a href="{% url 'envelopes:index' %}">envelopes</a>
+              |
+              <img src="{% static 'images/notebook-3.svg' %}" alt="accounts" title="accounts" height="16" /> <a href="{% url 'accounts:index' %}">accounts</a>
+              |
+              <img src="{% static 'images/list-19.svg' %}" alt="accounts" title="accounts" height="16" /> <a href="{% url 'transactions:index' %}">transactions</a>
+            </small>
+          </h1>
+          {% block main %}
+          {% endblock %}
+        </main>
+        {% block aside %}
         {% endblock %}
       </div>
     </div>

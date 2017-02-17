@@ -2,36 +2,36 @@
 {% block title %} transactions {% endblock %}
 {% load static %}
 
-{% block content %}
-  <main class="grd-row-col-4-6">
-    <h1><a href="/">home</a> &raquo; all transactions</h1>
-    {% if all_transactions %}
-    <table>
-      <thead>
-        <tr>
-          <th>date</th>
-          <th>account</th>
-          <th>envelope</th>
-          <th class="txt--right">amount</th>
-        </tr>
-      </thead>
-      <tbody>
-        {% for transaction in all_transactions %}
-        <tr>
-          <td>{{ transaction }}</td>
-          <td><a href="{% url 'accounts:detail' transaction.account_id %}">{{ transaction.account }}</a></td>
-          <td><a href="{% url 'envelopes:detail' transaction.envelope_id %}">{{ transaction.envelope }}</a></td>
-          {% if transaction.amount > 0 %}
-          <td class="txt--right fnt--green">&pound;{{ transaction.amount }}</td>
-          {% else %}
-          <td class="txt--right fnt--red">&pound;{{ transaction.amount }}</td>
-          {% endif %}
-        </tr>
-        {% endfor %}
-      </tbody>
-    </table>
-    {% endif %}
-  </main>
+{% block main %}
+  {% if all_transactions %}
+  <table>
+    <thead>
+      <tr>
+        <th>date</th>
+        <th>account</th>
+        <th>envelope</th>
+        <th class="txt--right">amount</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for transaction in all_transactions %}
+      <tr>
+        <td>{{ transaction }}</td>
+        <td><a href="{% url 'accounts:detail' transaction.account_id %}">{{ transaction.account }}</a></td>
+        <td><a href="{% url 'envelopes:detail' transaction.envelope_id %}">{{ transaction.envelope }}</a></td>
+        {% if transaction.amount > 0 %}
+        <td class="txt--right fnt--green">&pound;{{ transaction.amount }}</td>
+        {% else %}
+        <td class="txt--right fnt--red">&pound;{{ transaction.amount }}</td>
+        {% endif %}
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% endif %}
+{% endblock %}
+
+{% block aside %}
   <aside class="grd-row-col-2-6">
     <form action="{% url 'transactions:create' %}" method="post" class="brdr--light-gray">
       {% include 'shared/partials/transaction_form.html' with all_accounts=all_accounts all_envelopes=all_envelopes %}

@@ -2,43 +2,40 @@
 {% block title %} {{ account.name }} {% endblock %}
 {% load static %}
 
-{% block content %}
-  <main class="grd-row-col-4-6">
-    <h1>
-      <small><img src="{% static 'images/mail.svg' %}" alt="envelopes" title="envelopes" height="24" /> <a href="{% url 'envelopes:index' %}">envelopes</a></small> |
-      <img src="{% static 'images/notebook-3.svg' %}" alt="accounts" title="accounts" height="36" /> <a href="{% url 'accounts:index' %}">accounts</a> &raquo; {{ account.name }}
-    </h1>
-    <h2>
-      balance
-      {% if account.balance > 0 %}
-      <span class="fnt--green">&pound;{{ account.balance }}</span>
-      {% else %}
-      <span class="fnt--red">&pound;{{ account.balance }}</span>
-      {% endif %}
-    </h2>
-    <table>
-      <thead>
-        <tr>
-          <th>date</th>
-          <th>envelope</th>
-          <th class="txt--right">amount</th>
-        </tr>
-      </thead>
-      <tbody>
-        {% for transaction in account.transaction_set.all %}
-        <tr>
-          <td>{{ transaction }}</td>
-          <td><a href="{% url 'envelopes:detail' transaction.envelope_id %}">{{ transaction.envelope }}</a></td>
-          {% if transaction.amount > 0 %}
-          <td class="txt--right fnt--green">&pound;{{ transaction.amount }}</td>
-          {% else %}
-          <td class="txt--right fnt--red">&pound;{{ transaction.amount }}</td>
-          {% endif %}
-        </tr>
-        {% endfor %}
-      </tbody>
-    </table>
-  </main>
+{% block main %}
+  <h2>
+    balance
+    {% if account.balance > 0 %}
+    <span class="fnt--green">&pound;{{ account.balance }}</span>
+    {% else %}
+    <span class="fnt--red">&pound;{{ account.balance }}</span>
+    {% endif %}
+  </h2>
+  <table>
+    <thead>
+      <tr>
+        <th>date</th>
+        <th>envelope</th>
+        <th class="txt--right">amount</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for transaction in account.transaction_set.all %}
+      <tr>
+        <td>{{ transaction }}</td>
+        <td><a href="{% url 'envelopes:detail' transaction.envelope_id %}">{{ transaction.envelope }}</a></td>
+        {% if transaction.amount > 0 %}
+        <td class="txt--right fnt--green">&pound;{{ transaction.amount }}</td>
+        {% else %}
+        <td class="txt--right fnt--red">&pound;{{ transaction.amount }}</td>
+        {% endif %}
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+{% endblock %}
+
+{% block aside %}
   <aside class="grd-row-col-2-6">
     <form action="{% url 'accounts:create_transaction' %}" method="post" class="brdr--light-gray">
       {% include 'shared/partials/transaction_form.html' with all_accounts=all_accounts all_envelopes=all_envelopes account_id=account.id %}
