@@ -1,8 +1,10 @@
 from django.db import models
+from django.contrib.auth.models import User
 from decimal import Decimal
 from transactions.models import Transaction
 
 class Envelope(models.Model):
+  user             = models.ForeignKey(User, on_delete=models.CASCADE, default=1)
   name             = models.CharField(max_length=50)
   monthly_budget   = models.DecimalField(default=0, max_digits=8, decimal_places=2)
   immutable_budget = models.BooleanField(default=True)

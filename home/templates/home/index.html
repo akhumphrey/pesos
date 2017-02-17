@@ -4,6 +4,13 @@
 
 {% block content %}
 <main class="grd-row-col-4-6">
-  <h1>home</h1>
+  <h1>
+    home
+    <small>
+      <img src="{% static 'images/mail.svg' %}" alt="envelopes" title="envelopes" height="24" /> <a href="{% url 'envelopes:index' %}">envelopes</a>
+      |
+      <img src="{% static 'images/notebook-3.svg' %}" alt="accounts" title="accounts" height="24" /> <a href="{% url 'accounts:index' %}">accounts</a>
+    </small>
+  </h1>
 </main>
 {% endblock %}

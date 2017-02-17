@@ -11,17 +11,16 @@ from accounts.models import Account
 from envelopes.models import Envelope
 
 class IndexView(LoginRequiredMixin, generic.ListView):
-  login_url = '/login/'
   template_name = 'transactions/index.html'
   context_object_name = 'all_transactions'
 
   def get_queryset(self):
-    return Transaction.objects.order_by('-date')
+    return Transaction.objects.filter(account__user_id=self.request.user.id).order_by('-date')
 
   def get_context_data(self, **kwargs):
     context = super(IndexView, self).get_context_data(**kwargs)
-    context['all_accounts'] = Account.objects.order_by('name')
-    context['all_envelopes'] = Envelope.objects.order_by('name')
+    context['all_accounts'] = Account.objects.filter(user_id=self.request.user.id).order_by('name')
+    context['all_envelopes'] = Envelope.objects.filter(user_id=self.request.user.id).order_by('name')
     return context
 
 @login_required

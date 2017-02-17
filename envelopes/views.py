@@ -12,16 +12,15 @@ from accounts.models import Account
 from transactions.models import Transaction
 
 class IndexView(LoginRequiredMixin, generic.ListView):
-  login_url = '/login/'
   template_name = 'envelopes/index.html'
   context_object_name = 'all_envelopes'
 
   def get_queryset(self):
-    return Envelope.objects.order_by('name')
+    return Envelope.objects.filter(user_id=self.request.user.id).order_by('name')
 
   def get_context_data(self, **kwargs):
     context = super(IndexView, self).get_context_data(**kwargs)
-    context['all_accounts'] = Account.objects.order_by('name')
+    context['all_accounts'] = Account.objects.filter(user_id=self.request.user.id).order_by('name')
     context['envelope_budget_total'] = 0.0
     context['remaining_total'] = 0.0
 
@@ -33,14 +32,13 @@ class IndexView(LoginRequiredMixin, generic.ListView):
     return context
 
 class DetailView(LoginRequiredMixin, generic.DetailView):
-  login_url = '/login/'
   model = Envelope
   template_name = 'envelopes/detail.html'
 
   def get_context_data(self, **kwargs):
     context                  = super(DetailView, self).get_context_data(**kwargs)
-    context['all_accounts']  = Account.objects.order_by('name')
-    context['all_envelopes'] = Envelope.objects.order_by('name')
+    context['all_accounts']  = Account.objects.filter(user_id=self.request.user.id).order_by('name')
+    context['all_envelopes'] = Envelope.objects.filter(user_id=self.request.user.id).order_by('name')
     return context
 
 @login_required
@@ -68,13 +66,13 @@ def refill(request):
   envelope_budget_total = 0.0
   envelope_immutable_budget_total = 0.0
 
-  immutable_budget_envelopes = Envelope.objects.filter(immutable_budget=True)
+  immutable_budget_envelopes = Envelope.objects.filter(user_id=self.request.user.id).filter(immutable_budget=True)
 
   if len(immutable_budget_envelopes):
     for envelope in immutable_budget_envelopes:
       envelope_immutable_budget_total += float(envelope.monthly_budget)
 
-    remaining_envelopes = Envelope.objects.filter(immutable_budget=False)
+    remaining_envelopes = Envelope.objects.filter(user_id=self.request.user.id).filter(immutable_budget=False)
     amount -= envelope_immutable_budget_total
 
     try:
