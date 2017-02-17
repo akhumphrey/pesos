@@ -1,5 +1,5 @@
-from django.shortcuts import get_object_or_404, render
-from django.http import HttpResponseRedirect, Http404
+from django.shortcuts import render
+from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.urls import reverse
 from django.views import generic
 from django.contrib import messages
@@ -7,6 +7,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required
 
 from .models import Account
+from .forms import AccountForm
 from envelopes.models import Envelope
 from transactions.models import Transaction
 
@@ -62,3 +63,42 @@ def create_transaction(request):
     transaction.save()
     messages.add_message(request, messages.SUCCESS, 'Transaction added.')
     return HttpResponseRedirect(reverse('accounts:detail', args=(account.id,)))
+
+@login_required
+def edit(request, account_id):
+  try:
+    account = Account.objects.get(pk=account_id, user_id=request.user.id)
+  except:
+    raise Http404('Not found')
+
+  title   = ' '.join(['editing', account.name ])
+  form    = AccountForm(instance=account)
+  context = {
+    'title': title,
+    'account': account,
+    'form': form,
+  }
+  return render(request, 'accounts/edit.html', context)
+
+@login_required
+def update(request, account_id):
+  try:
+    account = Account.objects.get(pk=account_id, user_id=request.user.id)
+  except:
+    raise Http404('Not found')
+
+  form = AccountForm(request.POST)
+  if form.is_valid():
+    account.name = request.POST.get('name', account.name)
+    account.save()
+    messages.add_message(request, messages.SUCCESS, account.name + ' updated.')
+    return HttpResponseRedirect(reverse('accounts:detail', args=(account.id,)))
+  else:
+    title = ' '.join(['editing', account.name ])
+    context = {
+      'title': title,
+      'account': account,
+      'form': form,
+    }
+    messages.add_message(request, messages.ERROR, 'Something squiffy happened.')
+    return render(request, 'accounts/edit.html', context)

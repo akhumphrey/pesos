@@ -1,4 +1,4 @@
-from django.shortcuts import get_object_or_404, render
+from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.urls import reverse
 from django.views import generic
@@ -48,16 +48,22 @@ class DetailView(LoginRequiredMixin, generic.DetailView):
     return self.render_to_response(context)
 
   def get_context_data(self, **kwargs):
-    context                  = super(DetailView, self).get_context_data(**kwargs)
-    context['all_accounts']  = Account.objects.filter(user_id=self.request.user.id).order_by('name')
-    context['all_envelopes'] = Envelope.objects.filter(user_id=self.request.user.id).order_by('name')
+    user_id = self.request.user.id
+    context = super(DetailView, self).get_context_data(**kwargs)
+    context['all_accounts']  = Account.objects.filter(user_id=user_id).order_by('name')
+    context['all_envelopes'] = Envelope.objects.filter(user_id=user_id).order_by('name')
     return context
 
 @login_required
 def create_transaction(request):
-  account  = get_object_or_404(Account, pk=request.POST['account_id'])
-  envelope = get_object_or_404(Envelope, pk=request.POST['envelope_id'])
-  amount   = float(request.POST['amount'])
+  user_id = request.user.id
+  try:
+    account  = Account.objects.get(pk=request.POST['account_id'], user_id=user_id)
+    envelope = Envelope.objects.get(pk=request.POST['envelope_id'], user_id=user_id)
+  except:
+    raise Http404('Not found')
+
+  amount = float(request.POST['amount'])
   if 'subtract' in request.POST:
     amount = amount * -1.00
 
@@ -73,18 +79,22 @@ def create_transaction(request):
 
 @login_required
 def refill(request):
-  account = get_object_or_404(Account, pk=request.POST['account_id'])
-  amount  = float(request.POST['amount'])
+  user_id = request.user.id
+  try:
+    account = Account.objects.get(pk=request.POST['account_id'], user_id=user_id)
+  except:
+    raise Http404('Not found')
+
+  amount = float(request.POST['amount'])
   envelope_budget_total           = 0.0
   envelope_immutable_budget_total = 0.0
-
-  immutable_budget_envelopes = Envelope.objects.filter(user_id=self.request.user.id).filter(immutable_budget=True)
+  immutable_budget_envelopes      = Envelope.objects.filter(user_id=user_id).filter(immutable_budget=True)
 
   if len(immutable_budget_envelopes):
     for envelope in immutable_budget_envelopes:
       envelope_immutable_budget_total += float(envelope.monthly_budget)
 
-    remaining_envelopes = Envelope.objects.filter(user_id=self.request.user.id).filter(immutable_budget=False)
+    remaining_envelopes = Envelope.objects.filter(user_id=user_id).filter(immutable_budget=False)
     amount -= envelope_immutable_budget_total
 
     try:
@@ -112,7 +122,11 @@ def refill(request):
 
 @login_required
 def edit(request, envelope_id):
-  envelope = get_object_or_404(Envelope, pk=envelope_id)
+  try:
+    envelope = Envelope.objects.get(pk=envelope_id, user_id=request.user.id)
+  except:
+    raise Http404('Not found')
+
   title    = ' '.join(['editing', envelope.name ])
   form     = EnvelopeForm(instance=envelope)
   context  = {
@@ -124,9 +138,12 @@ def edit(request, envelope_id):
 
 @login_required
 def update(request, envelope_id):
-  envelope = get_object_or_404(Envelope, pk=envelope_id)
-  form     = EnvelopeForm(request.POST)
+  try:
+    envelope = Envelope.objects.get(pk=envelope_id, user_id=request.user.id)
+  except:
+    raise Http404('Not found')
 
+  form = EnvelopeForm(request.POST)
   if form.is_valid():
     envelope.name           = request.POST.get('name', envelope.name)
     envelope.monthly_budget = request.POST.get('monthly_budget', envelope.monthly_budget)

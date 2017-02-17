@@ -23,15 +23,16 @@
     <div class="grd">
       <div class="grd-row">
         <main class="grd-row-col-4-6">
+          {% if user.is_authenticated %}
           <h1>
-            <small>
-              <img src="{% static 'images/mail.svg' %}" alt="envelopes" title="envelopes" height="16" /> <a href="{% url 'envelopes:index' %}">envelopes</a>
-              |
-              <img src="{% static 'images/notebook-3.svg' %}" alt="accounts" title="accounts" height="16" /> <a href="{% url 'accounts:index' %}">accounts</a>
-              |
-              <img src="{% static 'images/list-19.svg' %}" alt="accounts" title="accounts" height="16" /> <a href="{% url 'transactions:index' %}">transactions</a>
-            </small>
+            <img src="{% static 'images/mail.svg' %}" alt="envelopes" title="envelopes" height="24" /> <a href="{% url 'envelopes:index' %}">envelopes</a>
+            |
+            <img src="{% static 'images/notebook-3.svg' %}" alt="accounts" title="accounts" height="24" /> <a href="{% url 'accounts:index' %}">accounts</a>
+            |
+            <img src="{% static 'images/list-19.svg' %}" alt="transactions" title="transactions" height="24" /> <a href="{% url 'transactions:index' %}">transactions</a>
           </h1>
+          {% endif %}
+
           {% block main %}
           {% endblock %}
         </main>

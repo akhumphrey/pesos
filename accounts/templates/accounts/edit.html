@@ -1,0 +1,18 @@
+{% extends 'shared/base.html' %}
+{% block title %} {{ title }} {% endblock %}
+{% load static %}
+
+{% block main %}
+  <form action="{% url 'accounts:update' account.id %}" method="post">
+    {% csrf_token %}
+
+    <div>
+      <label for="id_name">name</label>
+      {{ form.name }}
+    </div>
+
+    <div>
+      <input type="submit" value="save" class="btn btn--blue" />
+    </div>
+  </form>
+{% endblock %}
