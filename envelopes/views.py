@@ -1,5 +1,5 @@
 from django.shortcuts import get_object_or_404, render
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.urls import reverse
 from django.views import generic
 from django.contrib import messages
@@ -34,6 +34,18 @@ class IndexView(LoginRequiredMixin, generic.ListView):
 class DetailView(LoginRequiredMixin, generic.DetailView):
   model = Envelope
   template_name = 'envelopes/detail.html'
+
+  def get(self, request, *args, **kwargs):
+    try:
+      self.object = self.get_object()
+    except:
+      raise Http404('Not found')
+
+    if self.object.user_id != request.user.id:
+      raise Http404('Not found')
+
+    context = self.get_context_data(object=self.object)
+    return self.render_to_response(context)
 
   def get_context_data(self, **kwargs):
     context                  = super(DetailView, self).get_context_data(**kwargs)

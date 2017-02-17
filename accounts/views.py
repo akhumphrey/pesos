@@ -1,5 +1,5 @@
 from django.shortcuts import get_object_or_404, render
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, Http404
 from django.urls import reverse
 from django.views import generic
 from django.contrib import messages
@@ -26,11 +26,23 @@ class DetailView(LoginRequiredMixin, generic.DetailView):
   model = Account
   template_name = 'accounts/detail.html'
 
+  def get(self, request, *args, **kwargs):
+    try:
+      self.object = self.get_object()
+    except:
+      raise Http404('Not found')
+
+    if self.object.user_id != request.user.id:
+      raise Http404('Not found')
+
+    context = self.get_context_data(object=self.object)
+    return self.render_to_response(context)
+
   def get_context_data(self, **kwargs):
     user_id = self.request.user.id
     context = super(DetailView, self).get_context_data(**kwargs)
     context['all_accounts'] = Account.objects.filter(user_id=user_id).order_by('name')
-    context['all_envelopes'] = Envelope.objects.filter(user_id=self.request.user.id).order_by('name')
+    context['all_envelopes'] = Envelope.objects.filter(user_id=user_id).order_by('name')
     return context
 
 @login_required
