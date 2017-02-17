@@ -12,7 +12,7 @@ from accounts.models import Account
 from transactions.models import Transaction
 
 class IndexView(LoginRequiredMixin, generic.ListView):
-  template_name = 'envelopes/index.html'
+  template_name       = 'envelopes/index.html'
   context_object_name = 'all_envelopes'
 
   def get_queryset(self):
@@ -20,9 +20,9 @@ class IndexView(LoginRequiredMixin, generic.ListView):
 
   def get_context_data(self, **kwargs):
     context = super(IndexView, self).get_context_data(**kwargs)
-    context['all_accounts'] = Account.objects.filter(user_id=self.request.user.id).order_by('name')
+    context['all_accounts']          = Account.objects.filter(user_id=self.request.user.id).order_by('name')
     context['envelope_budget_total'] = 0.0
-    context['remaining_total'] = 0.0
+    context['remaining_total']       = 0.0
 
     all_envelopes = self.get_queryset()
     for envelope in all_envelopes:
@@ -32,7 +32,7 @@ class IndexView(LoginRequiredMixin, generic.ListView):
     return context
 
 class DetailView(LoginRequiredMixin, generic.DetailView):
-  model = Envelope
+  model         = Envelope
   template_name = 'envelopes/detail.html'
 
   def get(self, request, *args, **kwargs):
@@ -75,7 +75,7 @@ def create_transaction(request):
 def refill(request):
   account = get_object_or_404(Account, pk=request.POST['account_id'])
   amount  = float(request.POST['amount'])
-  envelope_budget_total = 0.0
+  envelope_budget_total           = 0.0
   envelope_immutable_budget_total = 0.0
 
   immutable_budget_envelopes = Envelope.objects.filter(user_id=self.request.user.id).filter(immutable_budget=True)
