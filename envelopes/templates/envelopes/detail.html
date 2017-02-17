@@ -6,7 +6,14 @@
   {% if envelope.immutable_budget %}
   <p>budget cannot be scaled</p>
   {% endif %}
-  <h2>running total &pound;{{ envelope.running_total }}</h2>
+  <h2>
+    running total
+    {% if envelope.running_total > 0 %}
+    <span class="fnt--green">&pound;{{ envelope.running_total|floatformat:2 }}</span>
+    {% else %}
+    <span class="fnt--red">&pound;{{ envelope.running_total|floatformat:2 }}</span>
+    {% endif %}
+  </h2>
   <table>
     <thead>
       <tr>
@@ -21,9 +28,9 @@
         <td>{{ transaction }}</td>
         <td><a href="{% url 'accounts:detail' transaction.account_id %}">{{ transaction.account }}</a></td>
         {% if transaction.amount > 0 %}
-        <td class="txt--right fnt--green">&pound;{{ transaction.amount }}</td>
+        <td class="txt--right fnt--green">&pound;{{ transaction.amount|floatformat:2 }}</td>
         {% else %}
-        <td class="txt--right fnt--red">&pound;{{ transaction.amount }}</td>
+        <td class="txt--right fnt--red">&pound;{{ transaction.amount|floatformat:2 }}</td>
         {% endif %}
       </tr>
       {% endfor %}

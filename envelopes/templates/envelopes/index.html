@@ -19,20 +19,20 @@
       <tr>
         <td><a href="{% url 'envelopes:edit' envelope.id %}"><img src="{% static 'images/mail-9.svg' %}" alt="edit" title="edit" height="24" /></a></td>
         <td><a href="{% url 'envelopes:detail' envelope.id %}">{{ envelope }}</a></td>
-        <td class="txt--right fnt--orange">&pound;{{ envelope.monthly_budget }}</td>
+        <td class="txt--right fnt--orange">&pound;{{ envelope.monthly_budget|floatformat:2 }}</td>
         {% if envelope.immutable_budget %}
         <td class="txt--right fnt--green">&#10004;</td>
         {% else %}
         <td class="txt--right fnt--red">&#10008;</td>
         {% endif %}
-        <td class="txt--right {% if envelope.running_total >= envelope.monthly_budget %} fnt--green {% else %} fnt--red {% endif %}">&pound;{{ envelope.running_total }}</td>
+        <td class="txt--right {% if envelope.running_total >= envelope.monthly_budget %} fnt--green {% else %} fnt--red {% endif %}">&pound;{{ envelope.running_total|floatformat:2 }}</td>
       </tr>
       {% endfor %}
     </tbody>
     <tfoot>
       <tr>
         <td colspan="2"></td>
-        <td class="fnt--orange">&pound;{{ envelope_budget_total }}</td>
+        <td class="fnt--orange">&pound;{{ envelope_budget_total|floatformat:2 }}</td>
         <td>&nbsp;</td>
         <td class="{% if remaining_total > 0 %} fnt--green {% else %} fnt--red {% endif %}">&pound;{{ remaining_total|floatformat:2 }}</td>
       </tr>

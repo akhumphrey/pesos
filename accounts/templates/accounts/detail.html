@@ -6,9 +6,9 @@
   <h2>
     balance
     {% if account.balance > 0 %}
-    <span class="fnt--green">&pound;{{ account.balance }}</span>
+    <span class="fnt--green">&pound;{{ account.balance|floatformat:2 }}</span>
     {% else %}
-    <span class="fnt--red">&pound;{{ account.balance }}</span>
+    <span class="fnt--red">&pound;{{ account.balance|floatformat:2 }}</span>
     {% endif %}
   </h2>
   <table>
@@ -25,9 +25,9 @@
         <td>{{ transaction }}</td>
         <td><a href="{% url 'envelopes:detail' transaction.envelope_id %}">{{ transaction.envelope }}</a></td>
         {% if transaction.amount > 0 %}
-        <td class="txt--right fnt--green">&pound;{{ transaction.amount }}</td>
+        <td class="txt--right fnt--green">&pound;{{ transaction.amount|floatformat:2 }}</td>
         {% else %}
-        <td class="txt--right fnt--red">&pound;{{ transaction.amount }}</td>
+        <td class="txt--right fnt--red">&pound;{{ transaction.amount|floatformat:2 }}</td>
         {% endif %}
       </tr>
       {% endfor %}
