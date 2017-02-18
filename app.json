@@ -1,0 +1,8 @@
+{
+  "name": "Money",
+  "description": "A basic budgeting app written in django",
+  "image": "heroku/python",
+  "repository": "https://github.com/akhumphrey/money",
+  "keywords": ["python", "django" ],
+  "addons": [ "heroku-postgresql" ]
+}
