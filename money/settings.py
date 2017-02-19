@@ -15,9 +15,12 @@ DATABASES = {
 if not DEBUG:
   ALLOWED_HOSTS = ['.herokuapp.com']
 
+
+SECRET_KEY       = env('SECRET_KEY') # Raises ImproperlyConfigured exception if SECRET_KEY not in os.environ
+public_root      = root.path('/')
+STATIC_ROOT      = public_root('static')
 STATIC_URL       = '/static/'
 STATICFILES_DIRS = (SITE_ROOT, 'static')
-SECRET_KEY       = env('SECRET_KEY') # Raises ImproperlyConfigured exception if SECRET_KEY not in os.environ
 
 INSTALLED_APPS = [
   'home.apps.HomeConfig',
