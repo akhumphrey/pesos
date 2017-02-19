@@ -12,6 +12,8 @@ DATABASES = {
   'extra': env.db('SQLITE_URL', default='sqlite:////tmp/my-tmp-sqlite.db')
 }
 
+ALLOWED_HOSTS = ['.herokuapp.com']
+
 public_root = root.path('public/')
 STATIC_ROOT = public_root('static')
 STATIC_URL  = '/static/'
