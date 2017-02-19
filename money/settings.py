@@ -8,12 +8,7 @@ environ.Env.read_env() # reading .env file
 SITE_ROOT = root()
 DEBUG     = env('DEBUG')
 DATABASES = {
-  'default': {
-    'ENGINE': env('DB_ENGINE'),
-    'NAME': env('DB_NAME'),
-    'USER': env('DB_USER'),
-    'OPTIONS': env.dict('DB_OPTIONS'),
-  },
+  'default': env.db(),
   'extra': env.db('SQLITE_URL', default='sqlite:////tmp/my-tmp-sqlite.db')
 }
 
