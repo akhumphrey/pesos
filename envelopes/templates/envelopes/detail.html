@@ -3,6 +3,10 @@
 {% load static %}
 
 {% block main %}
+  <h1>
+    <a href="{% url 'envelopes:index' %}">&laquo;</a>
+    {{ envelope.name|lower }}
+  </h1>
   {% if envelope.immutable_budget %}
   <p>budget cannot be scaled</p>
   {% endif %}

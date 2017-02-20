@@ -3,6 +3,10 @@
 {% load static %}
 
 {% block main %}
+  <h1>
+    <a href="{% url 'accounts:detail' account.id %}">&laquo;</a>
+    editing <em>{{ account.name|lower }}</em>
+  </h1>
   <form action="{% url 'accounts:update' account.id %}" method="post">
     {% csrf_token %}
 

@@ -3,6 +3,10 @@
 {% load static %}
 
 {% block main %}
+  <h1>
+    <a href="{% url 'accounts:index' %}">&laquo;</a>
+    {{ account.name|lower }}
+  </h1>
   <h2>
     balance
     {% if account.balance > 0 %}

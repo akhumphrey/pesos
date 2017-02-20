@@ -3,6 +3,10 @@
 {% load static %}
 
 {% block main %}
+  <h1>
+    <a href="{% url 'envelopes:detail' envelope.id %}">&laquo;</a>
+    editing <em>{{ envelope.name|lower }}</em>
+  </h1>
   <form action="{% url 'envelopes:update' envelope.id %}" method="post">
     {% csrf_token %}
 
