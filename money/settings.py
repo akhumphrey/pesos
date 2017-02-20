@@ -13,11 +13,11 @@ DATABASES = {
 }
 
 if not DEBUG:
-  ALLOWED_HOSTS = ['.herokuapp.com']
+  ALLOWED_HOSTS       = ['.herokuapp.com']
+  STATICFILES_STORAGE = 'whitenoise.django.GzipManifestStaticFilesStorage'
 
-public_root = root.path('assets/')
 SECRET_KEY  = env('SECRET_KEY') # Raises ImproperlyConfigured exception if SECRET_KEY not in os.environ
-STATIC_ROOT = public_root()
+STATIC_ROOT = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'assets')
 STATIC_URL  = '/static/'
 
 INSTALLED_APPS = [
