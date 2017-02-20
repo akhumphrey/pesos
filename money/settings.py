@@ -1,7 +1,7 @@
-import environ
+import environ, os
 from django.contrib.messages import constants as message_constants
 
-root = environ.Path(__file__) - 3 # three folder back (/a/b/c/ - 3 = /)
+root = environ.Path(__file__) - 2 # three folder back (/a/b/c/ - 3 = /)
 env  = environ.Env(DEBUG=(bool, False),) # set default values and casting
 environ.Env.read_env() # reading .env file
 
@@ -15,12 +15,10 @@ DATABASES = {
 if not DEBUG:
   ALLOWED_HOSTS = ['.herokuapp.com']
 
-
-SECRET_KEY       = env('SECRET_KEY') # Raises ImproperlyConfigured exception if SECRET_KEY not in os.environ
-public_root      = root.path('/')
-STATIC_ROOT      = public_root('static')
-STATIC_URL       = '/static/'
-STATICFILES_DIRS = (SITE_ROOT, 'static')
+public_root = root.path('assets/')
+SECRET_KEY  = env('SECRET_KEY') # Raises ImproperlyConfigured exception if SECRET_KEY not in os.environ
+STATIC_ROOT = public_root()
+STATIC_URL  = '/static/'
 
 INSTALLED_APPS = [
   'home.apps.HomeConfig',
