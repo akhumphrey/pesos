@@ -49,7 +49,7 @@ class Envelope(models.Model):
         transactions += 1
 
     if amount > 0.0:
-      transaction = Transaction(account=account, envelope=Envelope.objects.get(pk=21), date=date, amount=round(amount, 2))
+      transaction = Transaction(account=account, date=date, amount=round(amount, 2))
       transaction.save()
       transactions += 1
 
