@@ -6,6 +6,7 @@
   <h1>
     <a href="{% url 'envelopes:index' %}">&laquo;</a>
     {{ envelope.name|lower }}
+    <a class="icon edit envelope" href="{% url 'envelopes:edit' envelope.id %}"></a>
   </h1>
   {% if envelope.immutable_budget %}
   <p>budget cannot be scaled</p>

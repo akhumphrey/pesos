@@ -1,11 +1,9 @@
-nav { margin-bottom: 3rem; }
-  nav a {
-    display: inline-block;
-    padding-left: 2rem;
-    margin-right: 2.5rem;
+nav {
+  margin-bottom: 3rem;
+}
+  nav a.icon {
+    margin-right: 1rem;
     font-size: 1.1rem;
-    background-repeat: no-repeat;
-    background-position: left;
     background-size: 20%;
   }
     nav a.home {
@@ -26,9 +24,13 @@ nav { margin-bottom: 3rem; }
 h1 {
   font-size: 2.998rem;
 }
-h1 small {
-  font-size: 1.5rem;
-}
+  h1 small {
+    font-size: 1.5rem;
+  }
+  h1 a.icon {
+    min-height: 1.2rem;
+    background-size: contain;
+  }
 h2 {
   font-size: 2.2rem;
 }
@@ -52,10 +54,24 @@ input[type="checkbox"] {
   width: inherit;
   margin: 5px;
 }
+a.icon {
+  min-height: 1rem;
+  min-width: 1rem;
+  display: inline-block;
+  padding-left: 1.5rem;
+  background-repeat: no-repeat;
+  background-position: left;
+}
+  a.account.edit {
+    background-image: url(/static/images/notebook-12.svg);
+  }
+  a.envelope.edit {
+    background-image: url(/static/images/mail-9.svg);
+  }
 .messages {
   padding: 0;
   margin-top: 0;
 }
-.messages li {
-  list-style-type: none;
-}
+  .messages li {
+    list-style-type: none;
+  }

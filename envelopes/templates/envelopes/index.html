@@ -9,7 +9,6 @@
     <thead>
       <tr>
         <th></th>
-        <th>name</th>
         <th class="txt--right">monthly budget</th>
         <th class="txt--right">immutable budget?</th>
         <th class="txt--right">remaining</th>
@@ -18,7 +17,6 @@
     <tbody>
       {% for envelope in all_envelopes %}
       <tr>
-        <td><a href="{% url 'envelopes:edit' envelope.id %}"><img src="{% static 'images/mail-9.svg' %}" alt="edit" title="edit" height="24" /></a></td>
         <td><a href="{% url 'envelopes:detail' envelope.id %}">{{ envelope }}</a></td>
         <td class="txt--right fnt--orange">&pound;{{ envelope.monthly_budget|floatformat:2 }}</td>
         {% if envelope.immutable_budget %}
@@ -32,7 +30,7 @@
     </tbody>
     <tfoot>
       <tr>
-        <td colspan="2"></td>
+        <td></td>
         <td class="fnt--orange">&pound;{{ envelope_budget_total|floatformat:2 }}</td>
         <td>&nbsp;</td>
         <td class="{% if remaining_total > 0 %} fnt--green {% else %} fnt--red {% endif %}">&pound;{{ remaining_total|floatformat:2 }}</td>

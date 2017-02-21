@@ -11,11 +11,11 @@
   <body class="py1 px1">
     {% if user.is_authenticated %}
       <nav>
-        <a class="home" href="/">home</a>
-        <a class="accounts" href="{% url 'accounts:index' %}">accounts</a>
-        <a class="envelopes" href="{% url 'envelopes:index' %}">envelopes</a>
-        <a class="transactions" href="{% url 'transactions:index' %}">transactions</a>
-        <a class="logout" href="{% url 'logout' %}">logout</a>
+        <a class="icon home" href="/">home</a>
+        <a class="icon accounts" href="{% url 'accounts:index' %}">accounts</a>
+        <a class="icon envelopes" href="{% url 'envelopes:index' %}">envelopes</a>
+        <a class="icon transactions" href="{% url 'transactions:index' %}">transactions</a>
+        <a class="icon logout" href="{% url 'logout' %}">logout</a>
       </nav>
     {% endif %}
     {% if messages %}
