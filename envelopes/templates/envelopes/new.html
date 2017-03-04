@@ -6,11 +6,9 @@
   <h1>
     <a href="{% url 'envelopes' %}">all envelopes</a>
     &raquo;
-    <a href="{% url 'envelopes:detail' envelope.id %}">{{ envelope.name|lower }}</a>
-    &raquo;
-    edit
+    {{ title }}
   </h1>
-  <form action="{% url 'envelopes:update' envelope.id %}" method="post">
+  <form action="{% url 'envelopes:create' %}" method="post">
     {% include 'partials/envelope_form.html' with form=form %}
   </form>
 {% endblock %}

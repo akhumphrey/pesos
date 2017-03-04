@@ -62,8 +62,14 @@ a.icon {
   background-repeat: no-repeat;
   background-position: left;
 }
+  a.account.new {
+    background-image: url(/static/images/notebook.svg);
+  }
   a.account.edit {
     background-image: url(/static/images/notebook-12.svg);
+  }
+  a.envelope.new {
+    background-image: url(/static/images/mail-17.svg);
   }
   a.envelope.edit {
     background-image: url(/static/images/mail-9.svg);

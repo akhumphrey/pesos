@@ -12,9 +12,9 @@
     {% if user.is_authenticated %}
       <nav>
         <a class="icon home" href="/">home</a>
-        <a class="icon accounts" href="{% url 'accounts:index' %}">accounts</a>
-        <a class="icon envelopes" href="{% url 'envelopes:index' %}">envelopes</a>
-        <a class="icon transactions" href="{% url 'transactions:index' %}">transactions</a>
+        <a class="icon accounts" href="{% url 'accounts' %}">accounts</a>
+        <a class="icon envelopes" href="{% url 'envelopes' %}">envelopes</a>
+        <a class="icon transactions" href="{% url 'transactions' %}">transactions</a>
         <a class="icon logout" href="{% url 'logout' %}">logout</a>
       </nav>
     {% endif %}

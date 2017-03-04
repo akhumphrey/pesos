@@ -4,9 +4,10 @@
 
 {% block main %}
   <h1>
-    <a href="{% url 'accounts:index' %}">&laquo;</a>
+    <a href="{% url 'accounts' %}">all accounts</a>
+    &raquo;
     {{ account.name|lower }}
-    <a class="icon edit account" href="{% url 'accounts:edit' account.id %}"></a>
+    <a title="edit {{ account.name }}" class="icon edit account" href="{% url 'accounts:edit' account.id %}"></a>
   </h1>
   <h2>
     balance

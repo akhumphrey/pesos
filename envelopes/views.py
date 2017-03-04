@@ -121,6 +121,32 @@ def refill(request):
   return HttpResponseRedirect(reverse('envelopes:index'))
 
 @login_required
+def new(request):
+  context = {
+    'title': 'new envelope',
+    'form': EnvelopeForm(),
+  }
+  return render(request, 'envelopes/new.html', context)
+
+@login_required
+def create(request):
+  form = EnvelopeForm(request.POST)
+  if form.is_valid():
+    immutable_budget = False
+    if request.POST.get('immutable_budget', False):
+      immutable_budget = True
+    envelope = Envelope.objects.create(name=request.POST.get('name'), immutable_budget=immutable_budget, monthly_budget=request.POST.get('monthly_budget'), user_id=request.user.id)
+    messages.add_message(request, messages.SUCCESS, envelope.name + ' created.')
+    return HttpResponseRedirect(reverse('envelopes:detail', args=(envelope.id,)))
+  else:
+    context = {
+      'title': 'new envelope',
+      'form': form,
+    }
+    messages.add_message(request, messages.ERROR, 'Something squiffy happened.')
+    return render(request, 'envelopes/new.html', context)
+
+@login_required
 def edit(request, envelope_id):
   try:
     envelope = Envelope.objects.get(pk=envelope_id, user_id=request.user.id)
@@ -147,10 +173,10 @@ def update(request, envelope_id):
   if form.is_valid():
     envelope.name           = request.POST.get('name', envelope.name)
     envelope.monthly_budget = request.POST.get('monthly_budget', envelope.monthly_budget)
+    immutable_budget = False
     if request.POST.get('immutable_budget', False):
-      envelope.immutable_budget = True
-    else:
-      envelope.immutable_budget = False
+      immutable_budget = True
+    envelope.immutable_budget = immutable_budget
     envelope.save()
     messages.add_message(request, messages.SUCCESS, envelope.name + ' updated.')
     return HttpResponseRedirect(reverse('envelopes:detail', args=(envelope.id,)))

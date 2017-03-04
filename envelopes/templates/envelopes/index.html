@@ -3,7 +3,10 @@
 {% load static %}
 
 {% block main %}
-  <h1>all envelopes</h1>
+  <h1>
+    all envelopes
+    <a title="new envelope" class="icon new envelope" href="{% url 'envelopes:new' %}"></a>
+  </h1>
   {% if all_envelopes %}
   <table>
     <thead>
@@ -47,17 +50,7 @@
     </form>
     <br />
     <form action="{% url 'envelopes:refill' %}" method="post" class="brdr--light-gray">
-      <h3>refill envelopes</h3>
-
-      {% csrf_token %}
-
-      {% include 'shared/partials/accounts_select.html' with all_accounts=all_accounts %}
-
-      {% include 'shared/partials/date_input.html' %}
-
-      {% include 'shared/partials/amount_input.html' %}
-
-      <p><input type="submit" value="payday!" class="btn btn--blue" /></p>
+      {% include 'shared/partials/refill_form.html' with all_accounts=all_accounts %}
     </form>
   </aside>
 {% endblock %}

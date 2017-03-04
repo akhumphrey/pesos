@@ -6,11 +6,9 @@
   <h1>
     <a href="{% url 'accounts' %}">all accounts</a>
     &raquo;
-    <a href="{% url 'accounts:detail' account.id %}">{{ account.name|lower }}</a>
-    &raquo;
-    edit
+    {{ title }}
   </h1>
-  <form action="{% url 'accounts:update' account.id %}" method="post">
+  <form action="{% url 'accounts:create' %}" method="post">
     {% include 'partials/account_form.html' with form=form %}
   </form>
 {% endblock %}

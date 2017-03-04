@@ -4,3 +4,15 @@
 
 {% block main %}
 {% endblock %}
+
+{% block aside %}
+  <aside class="grd-row-col-2-6">
+    <form action="{% url 'home:create_transaction' %}" method="post" class="brdr--light-gray">
+      {% include 'shared/partials/transaction_form.html' with all_accounts=all_accounts all_envelopes=all_envelopes %}
+    </form>
+    <br />
+    <form action="{% url 'home:refill' %}" method="post" class="brdr--light-gray">
+      {% include 'shared/partials/refill_form.html' with all_accounts=all_accounts %}
+    </form>
+  </aside>
+{% endblock %}

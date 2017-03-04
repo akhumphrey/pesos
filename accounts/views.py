@@ -65,6 +65,29 @@ def create_transaction(request):
     return HttpResponseRedirect(reverse('accounts:detail', args=(account.id,)))
 
 @login_required
+def new(request):
+  context = {
+    'title': 'new account',
+    'form': AccountForm(),
+  }
+  return render(request, 'accounts/new.html', context)
+
+@login_required
+def create(request):
+  form = AccountForm(request.POST)
+  if form.is_valid():
+    account = Account.objects.create(name=request.POST.get('name'), user_id=request.user.id)
+    messages.add_message(request, messages.SUCCESS, account.name + ' created.')
+    return HttpResponseRedirect(reverse('accounts:detail', args=(account.id,)))
+  else:
+    context = {
+      'title': 'new account',
+      'form': form,
+    }
+    messages.add_message(request, messages.ERROR, 'Something squiffy happened.')
+    return render(request, 'accounts/new.html', context)
+
+@login_required
 def edit(request, account_id):
   try:
     account = Account.objects.get(pk=account_id, user_id=request.user.id)
