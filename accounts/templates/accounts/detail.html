@@ -1,6 +1,7 @@
 {% extends 'shared/base.html' %}
 {% block title %} {{ account.name }} {% endblock %}
 {% load static %}
+{% load currency %}
 
 {% block main %}
   <h1>
@@ -11,11 +12,7 @@
   </h1>
   <h2>
     balance
-    {% if account.balance > 0 %}
-    <span class="fnt--green">&pound;{{ account.balance|floatformat:2 }}</span>
-    {% else %}
-    <span class="fnt--red">&pound;{{ account.balance|floatformat:2 }}</span>
-    {% endif %}
+    <span class="{% if account.balance > 0 %}fnt--green{% else %}fnt--red{% endif %}">{{ account.balance|currency }}</span>
   </h2>
   <table>
     <thead>
@@ -30,11 +27,7 @@
       <tr>
         <td>{{ transaction }}</td>
         <td><a href="{% url 'envelopes:detail' transaction.envelope_id %}">{{ transaction.envelope }}</a></td>
-        {% if transaction.amount > 0 %}
-        <td class="txt--right fnt--green">&pound;{{ transaction.amount|floatformat:2 }}</td>
-        {% else %}
-        <td class="txt--right fnt--red">&pound;{{ transaction.amount|floatformat:2 }}</td>
-        {% endif %}
+        <td class="txt--right {% if transaction.amount > 0 %}fnt--green{% else %}fnt--red{% endif %}">{{ transaction.amount|currency }}</td>
       </tr>
       {% endfor %}
     </tbody>

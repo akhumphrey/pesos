@@ -1,6 +1,7 @@
 {% extends 'shared/base.html' %}
 {% block title %} envelopes {% endblock %}
 {% load static %}
+{% load currency %}
 
 {% block main %}
   <h1>
@@ -21,22 +22,22 @@
       {% for envelope in all_envelopes %}
       <tr>
         <td><a href="{% url 'envelopes:detail' envelope.id %}">{{ envelope }}</a></td>
-        <td class="txt--right fnt--orange">&pound;{{ envelope.monthly_budget|floatformat:2 }}</td>
+        <td class="txt--right fnt--orange">{{ envelope.monthly_budget|currency }}</td>
         {% if envelope.immutable_budget %}
         <td class="txt--right fnt--green">&#10004;</td>
         {% else %}
         <td class="txt--right fnt--red">&#10008;</td>
         {% endif %}
-        <td class="txt--right {% if envelope.running_total >= envelope.monthly_budget %} fnt--green {% else %} fnt--red {% endif %}">&pound;{{ envelope.running_total|floatformat:2 }}</td>
+        <td class="txt--right {% if envelope.running_total >= envelope.monthly_budget %} fnt--green {% else %} fnt--red {% endif %}">{{ envelope.running_total|currency }}</td>
       </tr>
       {% endfor %}
     </tbody>
     <tfoot>
       <tr>
         <td></td>
-        <td class="fnt--orange">&pound;{{ envelope_budget_total|floatformat:2 }}</td>
+        <td class="fnt--orange">{{ envelope_budget_total|currency }}</td>
         <td>&nbsp;</td>
-        <td class="{% if remaining_total > 0 %} fnt--green {% else %} fnt--red {% endif %}">&pound;{{ remaining_total|floatformat:2 }}</td>
+        <td class="{% if remaining_total > 0 %}fnt--green{% else %}fnt--red{% endif %}">{{ remaining_total|currency }}</td>
       </tr>
     </tfoot>
   </table>

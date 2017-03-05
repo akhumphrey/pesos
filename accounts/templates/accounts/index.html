@@ -1,6 +1,7 @@
 {% extends 'shared/base.html' %}
 {% block title %} accounts {% endblock %}
 {% load static %}
+{% load currency %}
 
 {% block main %}
   <h1>
@@ -19,11 +20,7 @@
       {% for account in all_accounts %}
       <tr>
         <td><a href="{% url 'accounts:detail' account.id %}">{{ account }}</a></td>
-        {% if account.balance > 0 %}
-        <td class="txt--right fnt--green">&pound;{{ account.balance|floatformat:2 }}</td>
-        {% else %}
-        <td class="txt--right fnt--red">&pound;{{ account.balance|floatformat:2 }}</td>
-        {% endif %}
+        <td class="txt--right {% if account.balance > 0 %}fnt--green{% else %}fnt--red{% endif %}">{{ account.balance|currency }}</td>
       </tr>
       {% endfor %}
     </tbody>
