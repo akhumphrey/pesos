@@ -26,7 +26,13 @@
       {% for transaction in account.transaction_set.all %}
       <tr>
         <td>{{ transaction }}</td>
-        <td><a href="{% url 'envelopes:detail' transaction.envelope_id %}">{{ transaction.envelope }}</a></td>
+        <td>
+          {% if transaction.envelope_id %}
+          <a href="{% url 'envelopes:detail' transaction.envelope_id %}">{{ transaction.envelope }}</a>
+          {% else %}
+          -
+          {% endif %}
+        </td>
         <td class="txt--right {% if transaction.amount > 0 %}fnt--green{% else %}fnt--red{% endif %}">{{ transaction.amount|currency }}</td>
       </tr>
       {% endfor %}

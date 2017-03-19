@@ -42,7 +42,7 @@ class DetailView(LoginRequiredMixin, generic.DetailView):
   def get_context_data(self, **kwargs):
     user_id = self.request.user.id
     context = super(DetailView, self).get_context_data(**kwargs)
-    context['all_accounts'] = Account.objects.filter(user_id=user_id).order_by('name')
+    context['all_accounts']  = Account.objects.filter(user_id=user_id).order_by('name')
     context['all_envelopes'] = Envelope.objects.filter(user_id=user_id).order_by('name')
     return context
 
