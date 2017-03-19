@@ -25,9 +25,12 @@ class IndexView(LoginRequiredMixin, generic.ListView):
 
 @login_required
 def create(request):
-  account = get_object_or_404(Account, pk=request.POST['account_id'])
-  envelope = get_object_or_404(Envelope, pk=request.POST['envelope_id'])
-  amount = request.POST['amount']
+  account  = get_object_or_404(Account, pk=request.POST['account_id'])
+  amount   = request.POST['amount']
+  envelope = None
+  if isinstance(request.POST['envelope_id'], int):
+    envelope = get_object_or_404(Envelope, pk=request.POST['envelope_id'])
+
   if 'subtract' in request.POST:
     amount = float(amount) * -1.00
 
@@ -39,4 +42,4 @@ def create(request):
   else:
     transaction.save()
     messages.add_message(request, messages.SUCCESS, 'Transaction added.')
-    return HttpResponseRedirect(reverse('transactions:index'))
+    return HttpResponseRedirect(reverse('transactions'))

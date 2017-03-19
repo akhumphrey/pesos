@@ -64,7 +64,7 @@ def refill(request):
       count += Envelope.refill(request.POST['date'], account, remaining_envelopes, amount, False)
     except ValueError as e:
       messages.add_message(request, messages.ERROR, str(e))
-      return HttpResponseRedirect(reverse('envelopes:index'))
+      return HttpResponseRedirect(reverse('envelopes'))
 
   else:
     all_envelopes = Envelope.objects.all()
@@ -72,7 +72,7 @@ def refill(request):
       count = Envelope.refill(request.POST['date'], account, all_envelopes, amount, False)
     except ValueError as e:
       messages.add_message(request, messages.ERROR, str(e))
-      return HttpResponseRedirect(reverse('envelopes:index'))
+      return HttpResponseRedirect(reverse('envelopes'))
 
   if count == 1:
     plural = 'transaction'
@@ -80,4 +80,4 @@ def refill(request):
     plural = 'transactions'
 
   messages.add_message(request, messages.SUCCESS, 'Refill successful - ' + str(count) + ' ' + plural + ' added.')
-  return HttpResponseRedirect(reverse('envelopes:index'))
+  return HttpResponseRedirect(reverse('envelopes'))

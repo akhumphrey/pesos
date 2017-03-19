@@ -2,12 +2,14 @@ from django.db import models
 from django.contrib.auth.models import User
 from decimal import Decimal
 from transactions.models import Transaction
+from datetime import datetime, timedelta
 
 class Envelope(models.Model):
-  user             = models.ForeignKey(User, on_delete=models.CASCADE, default=1)
-  name             = models.CharField(max_length=50)
-  monthly_budget   = models.DecimalField(default=0, max_digits=8, decimal_places=2)
-  immutable_budget = models.BooleanField(default=True)
+  user                 = models.ForeignKey(User, on_delete=models.CASCADE, default=1)
+  name                 = models.CharField(max_length=50)
+  monthly_budget       = models.DecimalField(default=0, max_digits=8, decimal_places=2)
+  immutable_budget     = models.BooleanField(default=True)
+  transaction_velocity = models.DecimalField(default=0, max_digits=18, decimal_places=6)
 
   def __str__(self):
     return self.name
@@ -21,6 +23,19 @@ class Envelope(models.Model):
       total = total - ( -1 * Decimal(transaction.amount) )
 
     return total
+
+  def calculate_transaction_velocity(self):
+    if self.transaction_set.count() < 1:
+      return 0
+
+    limit    = datetime.now() - timedelta(days=90)
+    total    = Transaction.objects.filter(envelope_id=self.id,date__gt=limit).aggregate(models.Sum('amount'))
+    velocity = total['amount__sum'] / 90
+
+    self.transaction_velocity = velocity
+    self.save()
+
+    return velocity
 
   @classmethod
   def refill(cls, date, account, envelopes, amount, immutable=None):
